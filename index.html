@@ -1,78 +1,114 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MOK Portfolio</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: white;
-    }
+    <meta charset="UTF-8">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            font-family: 'Pretendard', sans-serif;
+            font-size: 12px; /* 폰트 크기 조정 */
+            color: #333;
+        }
 
-    /* 1. 상단 내비게이션 바 (MOK 로고를 왼쪽 위로 보내는 설정) */
-    .navbar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 30px 40px; /* 상하 30px, 좌우 40px 여백 */
-      box-sizing: border-box;
-    }
+        /* 헤더 고정 설정 */
+        .header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 40px;
+            position: sticky;
+            top: 0;
+            background-color: #f4f4f4;
+            z-index: 100;
+        }
 
-    .navbar h1 {
-      font-size: 28px; /* 상단 로고 크기에 맞게 세련되게 조절 */
-      margin: 0;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
+        .header-left, .header-right {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
 
-    /* 2. 메인 히어로 섹션 (가운데 설명글과 버튼 배치) */
-    .hero {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 0 20px;
-    }
+        /* 메인 레이아웃: 이미지(스크롤)와 콘텐츠(고정) */
+        .main-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
 
-    .hero p {
-      font-size: 20px;
-      color: #ccc;
-      margin: 0; /* 불필요한 기본 여백 제거 */
-    }
+        /* 오른쪽 콘텐츠 고정 설정 */
+        .content-fixed-section {
+            position: sticky;
+            top: 100px; /* 헤더 아래에서 고정 시작 */
+        }
 
-    /* 3. 버튼 스타일 */
-    .button {
-      margin-top: 30px;
-      padding: 14px 28px;
-      background: white;
-      color: black;
-      text-decoration: none;
-      border-radius: 999px;
-      font-weight: bold;
-      transition: opacity 0.2s ease; /* 마우스 올렸을 때 부드럽게 변하도록 효과 추가 */
-    }
+        .image-container {
+            margin-bottom: 20px;
+        }
+        .image-container img {
+            width: 100%;
+            display: block;
+        }
 
-    .button:hover {
-      opacity: 0.8;
-    }
-  </style>
+        .content h3 {
+            font-size: 11px;
+            margin-top: 30px;
+            margin-bottom: 10px;
+            color: #888;
+            text-transform: uppercase;
+        }
+        .content p { line-height: 1.6; margin: 0; }
+        .content ul { list-style: none; padding: 0; margin: 0; }
+        .content li { margin-bottom: 5px; }
+    </style>
 </head>
 <body>
 
-  <nav class="navbar">
-    <h1>MOK</h1>
-  </nav>
+    <header class="header">
+        <div class="header-left">
+            <div><strong>MOK ARCHIVE</strong><br>architecture & interior</div>
+            <div>Less Is More</div>
+        </div>
+        <div class="header-right">
+            <div><strong>LOCATION</strong><br>based in seoul</div>
+            <div><strong>CONTACT</strong><br>wjdwoahr_@naver.com</div>
+        </div>
+    </header>
 
-  <section class="hero">
-    <p>Interior & Spatial Design Portfolio</p>
-    <a class="button" href="#">View Projects</a>
-  </section>
+    <main class="main-wrapper">
+        <div class="image-scroll-section">
+            <div class="image-container"><img src="your-image.jpg" alt="Project"></div>
+            <div class="image-container"><img src="your-image.jpg" alt="Project"></div>
+            <div class="image-container"><img src="your-image.jpg" alt="Project"></div>
+        </div>
+
+        <div class="content-fixed-section">
+            <div class="content">
+                <h3>PROJECT</h3>
+                <p>Comfortemple</p>
+                
+                <h3>PROJECT TYPE</h3>
+                <p>Architecture + Interior</p>
+
+                <h3>DESCRIPTION</h3>
+                <p>Eclipse explores the interplay between concealment and clarity—where shadow becomes structure, and light reveals form. This identity system centers around the idea of presence in absence.</p>
+
+                <h3>SERVICES</h3>
+                <ul>
+                    <li>Brand Strategy</li>
+                    <li>Visual Identity</li>
+                    <li>Art Direction</li>
+                    <li>Typography</li>
+                    <li>Digital Presence</li>
+                </ul>
+            </div>
+        </div>
+    </main>
 
 </body>
 </html>
