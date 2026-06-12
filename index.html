@@ -10,27 +10,43 @@
       font-family: Arial, sans-serif;
       background: #111;
       color: white;
-      text-align: center;
     }
 
+    /* 1. 상단 내비게이션 바 (MOK 로고를 왼쪽 위로 보내는 설정) */
+    .navbar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 30px 40px; /* 상하 30px, 좌우 40px 여백 */
+      box-sizing: border-box;
+    }
+
+    .navbar h1 {
+      font-size: 28px; /* 상단 로고 크기에 맞게 세련되게 조절 */
+      margin: 0;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    /* 2. 메인 히어로 섹션 (가운데 설명글과 버튼 배치) */
     .hero {
       height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      text-align: center;
+      padding: 0 20px;
     }
 
-    h1 {
-      font-size: 64px;
-      margin-bottom: 10px;
-    }
-
-    p {
+    .hero p {
       font-size: 20px;
       color: #ccc;
+      margin: 0; /* 불필요한 기본 여백 제거 */
     }
 
+    /* 3. 버튼 스타일 */
     .button {
       margin-top: 30px;
       padding: 14px 28px;
@@ -39,6 +55,7 @@
       text-decoration: none;
       border-radius: 999px;
       font-weight: bold;
+      transition: opacity 0.2s ease; /* 마우스 올렸을 때 부드럽게 변하도록 효과 추가 */
     }
 
     .button:hover {
@@ -47,10 +64,15 @@
   </style>
 </head>
 <body>
-  <section class="hero">
+
+  <nav class="navbar">
     <h1>MOK</h1>
-    <p>Design Portfolio</p>
+  </nav>
+
+  <section class="hero">
+    <p>Interior & Spatial Design Portfolio</p>
     <a class="button" href="#">View Projects</a>
   </section>
+
 </body>
 </html>
