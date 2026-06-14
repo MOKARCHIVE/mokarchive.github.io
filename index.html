@@ -7,21 +7,28 @@
     <style>
         body { margin: 0; padding: 20px; background-color: #f4f4f4; font-family: 'Pretendard', sans-serif; font-size: 12px; color: #333; }
 
-        .header { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding-bottom: 40px; border-bottom: 1px solid #ccc; margin-bottom: 40px; position: sticky; top: 0; background-color: #f4f4f4; z-index: 100; }
+        /* 링크 스타일 초기화 */
+        a { text-decoration: none; color: inherit; display: block; }
+
+        .header { 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding-bottom: 40px; 
+            border-bottom: 1px solid #ccc; margin-bottom: 40px; position: sticky; top: 0; 
+            background-color: #f4f4f4; z-index: 100;
+        }
+        
+        .sub-text { font-weight: 400; } 
+
         .header-left, .header-right { display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
         
-        /* 버튼 위치 및 스타일 */
         .header-right { position: relative; }
         .menu-btn { 
-            width: 20px; height: 20px; background-color: #000; /* 검은색 */
-            cursor: pointer; position: absolute; right: 0; top: 0; 
-            transition: transform 0.3s ease; 
+            width: 20px; height: 20px; background-color: #000; cursor: pointer; 
+            position: absolute; right: 30px; top: 0; transition: transform 0.3s ease; 
         }
         .menu-btn:hover { transform: rotate(45deg); }
 
-        /* 메뉴 목록 스타일 (버튼 아래 위치) */
         .menu-list { 
-            display: none; position: absolute; top: 30px; right: 0; 
+            display: none; position: absolute; top: 30px; right: 30px; 
             background: #f4f4f4; border: 1px solid #333; padding: 10px;
             text-align: right; z-index: 1000;
         }
@@ -36,20 +43,29 @@
         .content p { line-height: 1.6; margin: 0; }
         .content ul { list-style: none; padding: 0; margin: 0; }
         .content li { margin-bottom: 5px; }
+
+        @media (max-width: 768px) {
+            .header { grid-template-columns: 1fr; gap: 20px; }
+            .header-left, .header-right { grid-template-columns: 1fr; gap: 10px; }
+            .main-wrapper { grid-template-columns: 1fr; }
+            .content-fixed-section { position: static; order: -1; }
+            .menu-btn { right: 0; }
+        }
     </style>
 </head>
 <body>
 
     <header class="header">
-        <div class="header-left">
-            <div><strong>MOK ARCHIVE</strong><br>architecture & interior</div>
-            <div>슬로건적으려고 만든 자리 뭐라쓰지</div>
-        </div>
+        <a href="index.html" class="header-left">
+            <div><strong>MOK ARCHIVE</strong><br><span class="sub-text">architecture & interior</span></div>
+            <div><span class="sub-text">Only What Matters</span></div>
+        </a>
+        
         <div class="header-right">
-            <div><strong>LOCATION</strong><br>based in seoul</div>
-            <div><strong>CONTACT</strong><br>wjdwoahr_@naver.com</div>
+            <div><strong>LOCATION</strong><br><span class="sub-text">based in seoul</span></div>
+            <div><strong>CONTACT</strong><br><span class="sub-text">wjdwoahr_@naver.com</span></div>
             
-            <div class="menu-btn" onclick="toggleMenu()"></div>
+            <div class="menu-btn" id="menuBtn" onclick="toggleMenu(event)"></div>
             <div class="menu-list" id="menuList">
                 <div>Projects</div>
                 <div>About</div>
@@ -60,7 +76,7 @@
 
     <main class="main-wrapper">
         <div class="image-scroll-section">
-            <div class="image-container"><img src="your-image.jpg" alt="Project"></div>
+            <div class="image-container"><img src="2.jpg" alt="Project"></div>
             <div class="image-container"><img src="your-image.jpg" alt="Project"></div>
             <div class="image-container"><img src="your-image.jpg" alt="Project"></div>
         </div>
@@ -86,9 +102,19 @@
     </main>
 
     <script>
-        function toggleMenu() {
+        function toggleMenu(event) {
+            event.stopPropagation();
             document.getElementById('menuList').classList.toggle('active');
         }
+
+        document.addEventListener('click', function(event) {
+            const menuList = document.getElementById('menuList');
+            const menuBtn = document.getElementById('menuBtn');
+            
+            if (event.target !== menuBtn && !menuList.contains(event.target)) {
+                menuList.classList.remove('active');
+            }
+        });
     </script>
 </body>
 </html>
