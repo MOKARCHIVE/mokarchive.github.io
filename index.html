@@ -5,63 +5,34 @@
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     
     <style>
-        body {
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-            font-family: 'Pretendard', sans-serif;
-            font-size: 12px; /* 폰트 크기 조정 */
-            color: #333;
-        }
+        body { margin: 0; padding: 20px; background-color: #f4f4f4; font-family: 'Pretendard', sans-serif; font-size: 12px; color: #333; }
 
-        /* 헤더 고정 설정 */
-        .header {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            padding-bottom: 40px;
-            border-bottom: 1px solid #ccc;
-            margin-bottom: 40px;
-            position: sticky;
-            top: 0;
-            background-color: #f4f4f4;
-            z-index: 100;
+        .header { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding-bottom: 40px; border-bottom: 1px solid #ccc; margin-bottom: 40px; position: sticky; top: 0; background-color: #f4f4f4; z-index: 100; }
+        .header-left, .header-right { display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
+        
+        /* 버튼 위치 및 스타일 */
+        .header-right { position: relative; }
+        .menu-btn { 
+            width: 20px; height: 20px; background-color: #000; /* 검은색 */
+            cursor: pointer; position: absolute; right: 0; top: 0; 
+            transition: transform 0.3s ease; 
         }
+        .menu-btn:hover { transform: rotate(45deg); }
 
-        .header-left, .header-right {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+        /* 메뉴 목록 스타일 (버튼 아래 위치) */
+        .menu-list { 
+            display: none; position: absolute; top: 30px; right: 0; 
+            background: #f4f4f4; border: 1px solid #333; padding: 10px;
+            text-align: right; z-index: 1000;
         }
+        .menu-list.active { display: block; }
+        .menu-list div { padding: 5px 0; cursor: pointer; }
 
-        /* 메인 레이아웃: 이미지(스크롤)와 콘텐츠(고정) */
-        .main-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: start;
-        }
-
-        /* 오른쪽 콘텐츠 고정 설정 */
-        .content-fixed-section {
-            position: sticky;
-            top: 100px; /* 헤더 아래에서 고정 시작 */
-        }
-
-        .image-container {
-            margin-bottom: 20px;
-        }
-        .image-container img {
-            width: 100%;
-            display: block;
-        }
-
-        .content h3 {
-            font-size: 11px;
-            margin-top: 30px;
-            margin-bottom: 10px;
-            color: #888;
-            text-transform: uppercase;
-        }
+        .main-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+        .content-fixed-section { position: sticky; top: 100px; }
+        .image-container { margin-bottom: 20px; }
+        .image-container img { width: 100%; display: block; }
+        .content h3 { font-size: 11px; margin-top: 30px; margin-bottom: 10px; color: #888; text-transform: uppercase; }
         .content p { line-height: 1.6; margin: 0; }
         .content ul { list-style: none; padding: 0; margin: 0; }
         .content li { margin-bottom: 5px; }
@@ -72,17 +43,24 @@
     <header class="header">
         <div class="header-left">
             <div><strong>MOK ARCHIVE</strong><br>architecture & interior</div>
-            <div>Less Is More</div>
+            <div>슬로건적으려고 만든 자리 뭐라쓰지</div>
         </div>
         <div class="header-right">
             <div><strong>LOCATION</strong><br>based in seoul</div>
             <div><strong>CONTACT</strong><br>wjdwoahr_@naver.com</div>
+            
+            <div class="menu-btn" onclick="toggleMenu()"></div>
+            <div class="menu-list" id="menuList">
+                <div>Projects</div>
+                <div>About</div>
+                <div>Contact</div>
+            </div>
         </div>
     </header>
 
     <main class="main-wrapper">
         <div class="image-scroll-section">
-            <div class="image-container"><img src="2.jpg" alt="Project"></div>
+            <div class="image-container"><img src="your-image.jpg" alt="Project"></div>
             <div class="image-container"><img src="your-image.jpg" alt="Project"></div>
             <div class="image-container"><img src="your-image.jpg" alt="Project"></div>
         </div>
@@ -91,13 +69,10 @@
             <div class="content">
                 <h3>PROJECT</h3>
                 <p>Comfortemple</p>
-                
                 <h3>PROJECT TYPE</h3>
                 <p>Architecture + Interior</p>
-
                 <h3>DESCRIPTION</h3>
                 <p>Eclipse explores the interplay between concealment and clarity—where shadow becomes structure, and light reveals form. This identity system centers around the idea of presence in absence.</p>
-
                 <h3>SERVICES</h3>
                 <ul>
                     <li>Brand Strategy</li>
@@ -110,5 +85,10 @@
         </div>
     </main>
 
+    <script>
+        function toggleMenu() {
+            document.getElementById('menuList').classList.toggle('active');
+        }
+    </script>
 </body>
 </html>
