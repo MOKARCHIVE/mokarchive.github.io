@@ -6,8 +6,6 @@
     
     <style>
         body { margin: 0; padding: 20px; background-color: #f4f4f4; font-family: 'Pretendard', sans-serif; font-size: 12px; color: #333; }
-
-        /* 링크 스타일 초기화 */
         a { text-decoration: none; color: inherit; display: block; }
 
         .header { 
@@ -17,26 +15,29 @@
         }
         
         .sub-text { font-weight: 300; } 
-
         .header-left, .header-right { display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
-        
         .header-right { position: relative; }
-        .menu-btn { 
-            width: 20px; height: 20px; background-color: #000; cursor: pointer; 
-            position: absolute; right: 30px; top: 0; transition: transform 0.3s ease; 
-        }
+        .menu-btn { width: 20px; height: 20px; background-color: #000; cursor: pointer; position: absolute; right: 30px; top: 0; transition: transform 0.3s ease; }
         .menu-btn:hover { transform: rotate(45deg); }
 
-        .menu-list { 
-            display: none; position: absolute; top: 30px; right: 30px; 
-            background: #f4f4f4; border: 1px solid #333; padding: 10px;
-            text-align: right; z-index: 1000;
-        }
+        .menu-list { display: none; position: absolute; top: 30px; right: 30px; background: #f4f4f4; border: 1px solid #333; padding: 10px; text-align: right; z-index: 1000; }
         .menu-list.active { display: block; }
         .menu-list div { padding: 5px 0; cursor: pointer; }
 
         .main-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+        
         .content-fixed-section { position: sticky; top: 100px; }
+        .content { position: relative; min-height: 400px; padding-bottom: 60px; }
+
+        /* 화살표 수정: 선 두께를 1px로 줄이고 대칭을 맞춤 */
+        .scroll-arrow { 
+            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 18px; height: 18px; 
+            border-bottom: 1px solid #333; 
+            border-right: 1px solid #333; 
+            transform: rotate(45deg);
+        }
+
         .image-container { margin-bottom: 20px; }
         .image-container img { width: 100%; display: block; }
         .content h3 { font-size: 11px; margin-top: 30px; margin-bottom: 10px; color: #888; text-transform: uppercase; }
@@ -48,8 +49,7 @@
             .header { grid-template-columns: 1fr; gap: 20px; }
             .header-left, .header-right { grid-template-columns: 1fr; gap: 10px; }
             .main-wrapper { grid-template-columns: 1fr; }
-            .content-fixed-section { position: static; order: -1; }
-            .menu-btn { right: 0; }
+            .content-fixed-section { position: static; }
         }
     </style>
 </head>
@@ -60,11 +60,9 @@
             <div><strong>MOK ARCHIVE</strong><br><span class="sub-text">architecture & interior</span></div>
             <div><span class="sub-text">Only What Matters</span></div>
         </a>
-        
         <div class="header-right">
             <div><strong>LOCATION</strong><br><span class="sub-text">based in seoul</span></div>
             <div><strong>CONTACT</strong><br><span class="sub-text">wjdwoahr_@naver.com</span></div>
-            
             <div class="menu-btn" id="menuBtn" onclick="toggleMenu(event)"></div>
             <div class="menu-list" id="menuList">
                 <div>About</div>
@@ -83,12 +81,9 @@
 
         <div class="content-fixed-section">
             <div class="content">
-                <h3>PROJECT</h3>
-                <p>Comfortemple</p>
-                <h3>PROJECT TYPE</h3>
-                <p>Architecture + Interior</p>
-                <h3>DESCRIPTION</h3>
-                <p>Eclipse explores the interplay between concealment and clarity—where shadow becomes structure, and light reveals form. This identity system centers around the idea of presence in absence.</p>
+                <h3>PROJECT</h3><p>Comfortemple</p>
+                <h3>PROJECT TYPE</h3><p>Architecture + Interior</p>
+                <h3>DESCRIPTION</h3><p>Eclipse explores the interplay between concealment and clarity—where shadow becomes structure, and light reveals form. This identity system centers around the idea of presence in absence.</p>
                 <h3>SERVICES</h3>
                 <ul>
                     <li>Brand Strategy</li>
@@ -97,6 +92,7 @@
                     <li>Typography</li>
                     <li>Digital Presence</li>
                 </ul>
+                <div class="scroll-arrow"></div>
             </div>
         </div>
     </main>
@@ -106,11 +102,9 @@
             event.stopPropagation();
             document.getElementById('menuList').classList.toggle('active');
         }
-
         document.addEventListener('click', function(event) {
             const menuList = document.getElementById('menuList');
             const menuBtn = document.getElementById('menuBtn');
-            
             if (event.target !== menuBtn && !menuList.contains(event.target)) {
                 menuList.classList.remove('active');
             }
