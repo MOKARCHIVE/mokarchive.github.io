@@ -9,18 +9,26 @@
         a { text-decoration: none; color: inherit; display: block; }
 
         .header { 
-            display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding-bottom: 40px; 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 35px; padding-bottom: 40px; 
             border-bottom: 1px solid #ccc; margin-bottom: 40px; position: sticky; top: 0; 
             background-color: #f4f4f4; z-index: 100;
         }
         
         .sub-text { font-weight: 300; } 
         .header-left, .header-right { display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
-        
-        /* 메뉴와 버튼을 감싸는 우측 영역 세팅 */
         .header-right { position: relative; }
 
-        /* [수정] 호버 감지 범위를 확보하기 위한 메뉴 wrapper */
+        /* [추가] MOK ARCHIVE 왼쪽 로고 박스 스타일 */
+        .logo-area { display: flex; align-items: flex-start; gap: 10px; }
+        .logo-box { 
+            width: 25px; 
+            height: 25px; 
+            background-color: #000; 
+            margin-top: 2px; /* 텍스트 높이와 맞추기 위한 여백 */
+            flex-shrink: 0;
+        }
+
+        /* 메뉴 Wrapper */
         .menu-wrapper {
             position: absolute;
             right: 20px;
@@ -28,27 +36,39 @@
             z-index: 1000;
         }
 
-        /* [수정] 기본 45도 회전 상태 유지 */
+        /* [수정] 가로 세 줄이 들어갈 메뉴 버튼 (기본 45도 상태 유지) */
         .menu-btn { 
-            width: 20px; 
-            height: 20px; 
-            background-color: #000; 
+            width: 22px; 
+            height: 22px; 
             cursor: pointer; 
-            margin-left: auto; /* 우측 정렬 유지 */
-            transform: rotate(45deg); 
+            margin-left: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2px;
+            box-sizing: border-box;
             transition: transform 0.3s ease; 
         }
 
-        /* [수정] wrapper에 마우스가 올라가면 버튼이 회전 */
-        .menu-wrapper:hover .menu-btn { 
-            transform: rotate(90deg); 
+        /* [추가] 메뉴 버튼 내부의 가로 세 줄 선 */
+        .menu-btn span {
+            display: block;
+            width: 100%;
+            height: 1.5px;
+            background-color: #000;
+            transition: background-color 0.3s ease;
         }
 
-        /* [수정] 기본적으로 메뉴는 숨김 처리 (opacity와 transition으로 부드럽게 연출) */
+        /* 마우스를 올리거나 클릭해서 활성화(.active) 되었을 때 회전 */
+        .menu-wrapper:hover .menu-btn,
+        .menu-wrapper.active .menu-btn { 
+        }
+
+        /* 메뉴 리스트 기본 상태 숨김 */
         .menu-list { 
             display: block; 
             position: absolute; 
-            top: 25px; 
+            top: 30px; 
             right: 0; 
             background: #f4f4f4; 
             border: 1px solid #333; 
@@ -60,20 +80,15 @@
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
-        /* [수정] wrapper에 마우스가 올라가면 메뉴 리스트가 바로 나타남 */
-        .menu-wrapper:hover .menu-list { 
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* JS용 active 클래스도 호환 유지 */
-        .menu-list.active {
+        /* 마우스를 올리거나 클릭했을 때 메뉴 표시 */
+        .menu-wrapper:hover .menu-list,
+        .menu-wrapper.active .menu-list { 
             opacity: 1;
             visibility: visible;
         }
 
         .menu-list div { padding: 5px 0; cursor: pointer; }
-        .menu-list div:hover { text-decoration: underline; } /* 마우스 올렸을 때 시각 효과 추가 */
+        .menu-list div:hover { text-decoration: underline; }
 
         .main-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
         .content-fixed-section { position: sticky; top: 100px; }
@@ -106,15 +121,22 @@
 
     <header class="header">
         <a href="index.html" class="header-left">
-            <div><strong>MOK ARCHIVE</strong><br><span class="sub-text">architecture & interior</span></div>
+            <div class="logo-area">
+                <div class="logo-box"></div>
+                <div><strong>MOK ARCHIVE</strong><br><span class="sub-text">architecture & interior</span></div>
+            </div>
             <div><span class="sub-text">Only What Matters</span></div>
         </a>
         <div class="header-right">
             <div><strong>LOCATION</strong><br><span class="sub-text">based in seoul</span></div>
             <div><strong>CONTACT</strong><br><span class="sub-text">wjdwoahr_@naver.com</span></div>
             
-            <div class="menu-wrapper">
-                <div class="menu-btn" id="menuBtn" onclick="toggleMenu(event)"></div>
+            <div class="menu-wrapper" id="menuWrapper" onclick="toggleMenu(event)">
+                <div class="menu-btn" id="menuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
                 <div class="menu-list" id="menuList">
                     <div>About</div>
                     <div>Project</div>
@@ -148,20 +170,3 @@
             </div>
         </div>
     </main>
-
-    <script>
-        // 클릭했을 때 켜고 닫히는 기존 기능(모바일 등 대응용)도 그대로 유지됩니다.
-        function toggleMenu(event) {
-            event.stopPropagation();
-            document.getElementById('menuList').classList.toggle('active');
-        }
-        document.addEventListener('click', function(event) {
-            const menuList = document.getElementById('menuList');
-            const menuBtn = document.getElementById('menuBtn');
-            if (event.target !== menuBtn && !menuList.contains(event.target)) {
-                menuList.remove('active');
-            }
-        });
-    </script>
-</body>
-</html>
