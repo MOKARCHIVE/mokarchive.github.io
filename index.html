@@ -16,26 +16,72 @@
         
         .sub-text { font-weight: 300; } 
         .header-left, .header-right { display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
+        
+        /* 메뉴와 버튼을 감싸는 우측 영역 세팅 */
         .header-right { position: relative; }
-        .menu-btn { width: 30px; height: 30px; background-color: #000; cursor: pointer; position: absolute; right: 20px; top: 0px; transition: transform 0.3s ease; }
-        .menu-btn:hover { transform: rotate(45deg); }
 
-        .menu-list { display: none; position: absolute; top: 30px; right: 30px; background: #f4f4f4; border: 1px solid #333; padding: 10px; text-align: right; z-index: 1000; }
-        .menu-list.active { display: block; }
+        /* [수정] 호버 감지 범위를 확보하기 위한 메뉴 wrapper */
+        .menu-wrapper {
+            position: absolute;
+            right: 20px;
+            top: 5px;
+            z-index: 1000;
+        }
+
+        /* [수정] 기본 45도 회전 상태 유지 */
+        .menu-btn { 
+            width: 20px; 
+            height: 20px; 
+            background-color: #000; 
+            cursor: pointer; 
+            margin-left: auto; /* 우측 정렬 유지 */
+            transform: rotate(45deg); 
+            transition: transform 0.3s ease; 
+        }
+
+        /* [수정] wrapper에 마우스가 올라가면 버튼이 회전 */
+        .menu-wrapper:hover .menu-btn { 
+            transform: rotate(90deg); 
+        }
+
+        /* [수정] 기본적으로 메뉴는 숨김 처리 (opacity와 transition으로 부드럽게 연출) */
+        .menu-list { 
+            display: block; 
+            position: absolute; 
+            top: 25px; 
+            right: 0; 
+            background: #f4f4f4; 
+            border: 1px solid #333; 
+            padding: 10px; 
+            text-align: right; 
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        /* [수정] wrapper에 마우스가 올라가면 메뉴 리스트가 바로 나타남 */
+        .menu-wrapper:hover .menu-list { 
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* JS용 active 클래스도 호환 유지 */
+        .menu-list.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
         .menu-list div { padding: 5px 0; cursor: pointer; }
+        .menu-list div:hover { text-decoration: underline; } /* 마우스 올렸을 때 시각 효과 추가 */
 
         .main-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
-        
         .content-fixed-section { position: sticky; top: 100px; }
-        .content { position: relative; min-height: 400px; padding-bottom: 60px; }
+        .content { position: relative; min-height: 400px; padding-bottom: 80px; }
 
-        /* 화살표 수정: 선 두께를 1px로 줄이고 대칭을 맞춤 */
         .scroll-arrow { 
-            position: absolute; bottom: 0; left: 48%; transform: translateX(-50%);
-            width: 20px; height: 20px; 
-            border-bottom: 1px solid #333; 
-            border-right: 1px solid #333; 
-            transform: rotate(45deg);
+            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%) rotate(45deg);
+            width: 20px; height: 20px; border-bottom: 1.5px solid #333; border-right: 1.5px solid #333; 
         }
 
         .image-container { margin-bottom: 20px; }
@@ -45,9 +91,12 @@
         .content ul { list-style: none; padding: 0; margin: 0; }
         .content li { margin-bottom: 5px; }
 
+        /* 모바일 전용 수정 */
         @media (max-width: 768px) {
-            .header { grid-template-columns: 1fr; gap: 20px; }
-            .header-left, .header-right { grid-template-columns: 1fr; gap: 10px; }
+            .header { grid-template-columns: 1fr; gap: 15px; }
+            .header-right > div:not(.menu-wrapper) { display: none; }
+            .header-right { grid-template-columns: 1fr; }
+            
             .main-wrapper { grid-template-columns: 1fr; }
             .content-fixed-section { position: static; }
         }
@@ -63,11 +112,14 @@
         <div class="header-right">
             <div><strong>LOCATION</strong><br><span class="sub-text">based in seoul</span></div>
             <div><strong>CONTACT</strong><br><span class="sub-text">wjdwoahr_@naver.com</span></div>
-            <div class="menu-btn" id="menuBtn" onclick="toggleMenu(event)"></div>
-            <div class="menu-list" id="menuList">
-                <div>About</div>
-                <div>Project</div>
-                <div>Contact</div>
+            
+            <div class="menu-wrapper">
+                <div class="menu-btn" id="menuBtn" onclick="toggleMenu(event)"></div>
+                <div class="menu-list" id="menuList">
+                    <div>About</div>
+                    <div>Project</div>
+                    <div>Contact</div>
+                </div>
             </div>
         </div>
     </header>
@@ -98,6 +150,7 @@
     </main>
 
     <script>
+        // 클릭했을 때 켜고 닫히는 기존 기능(모바일 등 대응용)도 그대로 유지됩니다.
         function toggleMenu(event) {
             event.stopPropagation();
             document.getElementById('menuList').classList.toggle('active');
@@ -106,7 +159,7 @@
             const menuList = document.getElementById('menuList');
             const menuBtn = document.getElementById('menuBtn');
             if (event.target !== menuBtn && !menuList.contains(event.target)) {
-                menuList.classList.remove('active');
+                menuList.remove('active');
             }
         });
     </script>
