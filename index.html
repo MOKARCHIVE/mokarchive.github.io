@@ -5,38 +5,52 @@
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     
     <style>
-        body { margin: 0; padding: 20px; background-color: #f4f4f4; font-family: 'Pretendard', sans-serif; font-size: 12px; color: #333; }
+        /* body의 padding을 0으로 만들어 스크롤 시 상단바가 밀리는 현상 방지 */
+        body { 
+            margin: 0; 
+            padding: 0; 
+            background-color: #f4f4f4; 
+            font-family: 'Pretendard', sans-serif; 
+            font-size: 12px; 
+            color: #333; 
+        }
         a { text-decoration: none; color: inherit; display: block; }
 
+        /* header를 화면 최상단에 완전히 밀착시키고 내부 패딩으로 여백 조절 */
         .header { 
-            display: grid; grid-template-columns: 1fr 1fr; gap: 35px; padding-bottom: 40px; 
-            border-bottom: 1px solid #ccc; margin-bottom: 40px; position: sticky; top: 0; 
-            background-color: #f4f4f4; z-index: 100;
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 35px; 
+            padding: 20px 20px 40px 20px; /* 위/좌/우 20px, 아래 40px 여백 */
+            border-bottom: 1px solid #ccc; 
+            position: sticky; 
+            top: 0; 
+            background-color: #f4f4f4; 
+            z-index: 100;
+            box-sizing: border-box; /* 패딩이 크기에 포함되도록 설정 */
         }
         
         .sub-text { font-weight: 300; } 
         .header-left, .header-right { display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
         .header-right { position: relative; }
 
-        /* [추가] MOK ARCHIVE 왼쪽 로고 박스 스타일 */
         .logo-area { display: flex; align-items: flex-start; gap: 10px; }
         .logo-box { 
             width: 25px; 
             height: 25px; 
             background-color: #000; 
-            margin-top: 2px; /* 텍스트 높이와 맞추기 위한 여백 */
+            margin-top: 2px; 
             flex-shrink: 0;
         }
 
         /* 메뉴 Wrapper */
         .menu-wrapper {
             position: absolute;
-            right: 20px;
+            right: 0px; /* 우측 여백에 딱 맞춤 */
             top: 2.5px;
             z-index: 1000;
         }
 
-        /* [수정] 가로 세 줄이 들어갈 메뉴 버튼 (기본 45도 상태 유지) */
         .menu-btn { 
             width: 25px; 
             height: 22px; 
@@ -50,7 +64,6 @@
             transition: transform 0.3s ease; 
         }
 
-        /* [추가] 메뉴 버튼 내부의 가로 세 줄 선 */
         .menu-btn span {
             display: block;
             width: 100%;
@@ -59,12 +72,6 @@
             transition: background-color 0.3s ease;
         }
 
-        /* 마우스를 올리거나 클릭해서 활성화(.active) 되었을 때 회전 */
-        .menu-wrapper:hover .menu-btn,
-        .menu-wrapper.active .menu-btn { 
-        }
-
-        /* 메뉴 리스트 기본 상태 숨김 */
         .menu-list { 
             display: block; 
             position: absolute; 
@@ -80,7 +87,6 @@
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
-        /* 마우스를 올리거나 클릭했을 때 메뉴 표시 */
         .menu-wrapper:hover .menu-list,
         .menu-wrapper.active .menu-list { 
             opacity: 1;
@@ -90,8 +96,18 @@
         .menu-list div { padding: 5px 0; cursor: pointer; }
         .menu-list div:hover { text-decoration: underline; }
 
-        .main-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
-        .content-fixed-section { position: sticky; top: 100px; }
+        /* 본문 영역에도 동일한 좌우/하단 여백(20px)과 상단 마진 부여 */
+        .main-wrapper { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 40px; 
+            align-items: start; 
+            padding: 0 20px 20px 20px; 
+            margin-top: 40px; 
+            box-sizing: border-box;
+        }
+        
+        .content-fixed-section { position: sticky; top: 120px; } /* 상단바 높이를 고려해 sticky 위치 조정 */
         .content { position: relative; min-height: 400px; padding-bottom: 80px; }
 
         .scroll-arrow { 
@@ -106,7 +122,6 @@
         .content ul { list-style: none; padding: 0; margin: 0; }
         .content li { margin-bottom: 5px; }
 
-        /* 모바일 전용 수정 */
         @media (max-width: 768px) {
             .header { grid-template-columns: 1fr; gap: 15px; }
             .header-right > div:not(.menu-wrapper) { display: none; }
@@ -131,7 +146,7 @@
             <div><strong>LOCATION</strong><br><span class="sub-text">based in seoul</span></div>
             <div><strong>CONTACT</strong><br><span class="sub-text">wjdwoahr_@naver.com</span></div>
             
-            <div class="menu-wrapper" id="menuWrapper" onclick="toggleMenu(event)">
+            <div class="menu-wrapper" id="menuWrapper">
                 <div class="menu-btn" id="menuBtn">
                     <span></span>
                     <span></span>
@@ -170,3 +185,13 @@
             </div>
         </div>
     </main>
+
+    <script>
+        // 메뉴 토글 자바스크립트가 필요한 경우 활용할 수 있는 함수 기본 틀
+        function toggleMenu(event) {
+            const wrapper = document.getElementById('menuWrapper');
+            wrapper.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
