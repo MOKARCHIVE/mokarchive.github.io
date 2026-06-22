@@ -5,7 +5,6 @@
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     
     <style>
-        /* body의 padding을 0으로 만들어 스크롤 시 상단바가 밀리는 현상 방지 */
         body { 
             margin: 0; 
             padding: 0; 
@@ -13,26 +12,29 @@
             font-family: 'Pretendard', sans-serif; 
             font-size: 12px; 
             color: #333; 
+            padding-top: 100px; /* 헤더 높이만큼 본문 상단 여백 추가 */
         }
         a { text-decoration: none; color: inherit; display: block; }
 
-        /* header 수정: border-bottom 제거 및 가상 요소로 그라데이션 선 추가 */
+        /* [핵심] position: fixed로 변경하여 화면 상단에 아예 고정 */
         .header { 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px; /* 헤더 높이 명시 */
             display: grid; 
             grid-template-columns: 1fr 1fr; 
             gap: 35px; 
-            padding: 20px 20px 40px 20px; 
-            position: sticky; 
-            top: 0; 
+            padding: 20px 20px 0 20px; 
             background-color: #f4f4f4; 
-            z-index: 100; 
+            z-index: 1000; 
             font-weight: 500;
             box-sizing: border-box;
-            position: relative; /* 가상 요소 위치 기준 */
-            border-bottom: none; /* 기존 테두리 제거 */
+            border-bottom: none; 
         }
 
-        /* 헤더 하단 그라데이션 경계선 */
+        /* 그라데이션 선도 헤더에 고정 */
         .header::after {
             content: "";
             position: absolute;
@@ -40,123 +42,34 @@
             left: 20px;
             right: 20px;
             height: 1px;
-            background: linear-gradient(
-                to right, 
-                rgba(160, 160, 160, 0) 0%,   /* 시작: 투명 */
-                rgba(160, 160, 160, 1) 10%,  /* 15% 지점: 선명 */
-                rgba(160, 160, 160, 1) 90%,  /* 85% 지점: 선명 */
-                rgba(160, 160, 160, 0) 100%  /* 끝: 투명 */
-            );
+            background: linear-gradient(to right, rgba(160, 160, 160, 0) 0%, rgba(160, 160, 160, 1) 10%, rgba(160, 160, 160, 1) 90%, rgba(160, 160, 160, 0) 100%);
         }
         
         .sub-text { font-weight: 300; } 
-        
-        .header-left { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            align-items: center; 
-        }
+        .header-left { display: grid; grid-template-columns: 1fr 1fr; align-items: center; }
         .header-right { display: grid; grid-template-columns: 1fr 1fr; align-items: start; position: relative; }
-
-        .center-text {
-            font-size: 16px;
-            font-weight: 200;
-            display: flex;
-            align-items: center;
-        }
-
+        .center-text { font-size: 16px; font-weight: 200; display: flex; align-items: center; }
         .logo-area { display: flex; align-items: flex-start; gap: 10px; }
-        .logo-box { 
-            width: 25px; 
-            height: 25px; 
-            background-color: #000; 
-            margin-top: 2px; 
-            flex-shrink: 0;
-        }
+        .logo-box { width: 25px; height: 25px; background-color: #000; margin-top: 2px; flex-shrink: 0; }
 
-        /* 메뉴 Wrapper */
-        .menu-wrapper {
-            position: absolute;
-            right: 0px;
-            top: 2.5px;
-            z-index: 1000;
-        }
+        .menu-wrapper { position: absolute; right: 20px; top: 20px; z-index: 1000; }
+        .menu-btn { width: 25px; height: 22px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; padding: 2px; box-sizing: border-box; }
+        .menu-btn span { display: block; width: 100%; height: 1.5px; background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%); }
 
-        .menu-btn { 
-            width: 25px; 
-            height: 22px; 
-            cursor: pointer; 
-            margin-left: auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 2px;
-            box-sizing: border-box;
-            transition: transform 0.3s ease; 
-        }
-
-        .menu-btn span {
-            display: block;
-            width: 100%;
-            height: 1.5px;
-            background-color: #000;
-            transition: background-color 0.3s ease;
-        }
-
-        .menu-list { 
-            display: block; 
-            position: absolute; 
-            top: 30px; 
-            right: 0; 
-            background: #f4f4f4; 
-            border: 1px solid #333; 
-            padding: 10px; 
-            text-align: right; 
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-
-        .menu-wrapper:hover .menu-list,
-        .menu-wrapper.active .menu-list { 
-            opacity: 1;
-            visibility: visible;
-        }
-
+        .menu-list { display: block; position: absolute; top: 30px; right: 0; background: #f4f4f4; border: 1px solid #333; padding: 10px; text-align: right; white-space: nowrap; opacity: 0; visibility: hidden; transition: opacity 0.3s ease; }
+        .menu-wrapper:hover .menu-list, .menu-wrapper.active .menu-list { opacity: 1; visibility: visible; }
         .menu-list div { padding: 5px 0; cursor: pointer; }
-        .menu-list div:hover { text-decoration: underline; }
 
-        .main-wrapper { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 40px; 
-            align-items: start; 
-            padding: 0 20px 20px 20px; 
-            margin-top: 40px; 
-            box-sizing: border-box;
-        }
-        
-        .content-fixed-section { position: sticky; top: 120px; }
+        .main-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; padding: 40px 20px; box-sizing: border-box; }
+        .content-fixed-section { position: sticky; top: 140px; } /* 헤더 아래로 띄움 */
         .content { position: relative; min-height: 400px; padding-bottom: 80px; }
-
-        .scroll-arrow { 
-            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%) rotate(45deg);
-            width: 20px; height: 20px; border-bottom: 1.5px solid #333; border-right: 1.5px solid #333; 
-        }
-
+        
         .image-container { margin-bottom: 20px; }
         .image-container img { width: 100%; display: block; }
-        .content h3 { font-size: 11px; margin-top: 30px; margin-bottom: 10px; color: #888; text-transform: uppercase; }
-        .content p { line-height: 1.6; margin: 0; }
-        .content ul { list-style: none; padding: 0; margin: 0; }
-        .content li { margin-bottom: 5px; }
 
         @media (max-width: 768px) {
-            .header { grid-template-columns: 1fr; gap: 15px; }
+            .header { grid-template-columns: 1fr; height: auto; padding-bottom: 20px; }
             .header-right > div:not(.menu-wrapper) { display: none; }
-            .header-right { grid-template-columns: 1fr; }
-            
             .main-wrapper { grid-template-columns: 1fr; }
             .content-fixed-section { position: static; }
         }
@@ -177,15 +90,11 @@
             <div><strong>CONTACT</strong><br><span class="sub-text">wjdwoahr_@naver.com</span></div>
             
             <div class="menu-wrapper" id="menuWrapper">
-                <div class="menu-btn" id="menuBtn" onclick="toggleMenu()">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                <div class="menu-btn" onclick="toggleMenu()">
+                    <span></span><span></span><span></span>
                 </div>
-                <div class="menu-list" id="menuList">
-                    <div>About</div>
-                    <div>Project</div>
-                    <div>Contact</div>
+                <div class="menu-list">
+                    <div>About</div><div>Project</div><div>Contact</div>
                 </div>
             </div>
         </div>
@@ -195,32 +104,17 @@
         <div class="image-scroll-section">
             <div class="image-container"><img src="2.jpg" alt="Project"></div>
             <div class="image-container"><img src="your-image.jpg" alt="Project"></div>
-            <div class="image-container"><img src="your-image.jpg" alt="Project"></div>
         </div>
-
         <div class="content-fixed-section">
             <div class="content">
                 <h3>PROJECT</h3><p>Comfortemple</p>
-                <h3>PROJECT TYPE</h3><p>Architecture + Interior</p>
-                <h3>DESCRIPTION</h3><p>Eclipse explores the interplay between concealment and clarity—where shadow becomes structure, and light reveals form. This identity system centers around the idea of presence in absence.</p>
-                <h3>SERVICES</h3>
-                <ul>
-                    <li>Brand Strategy</li>
-                    <li>Visual Identity</li>
-                    <li>Art Direction</li>
-                    <li>Typography</li>
-                    <li>Digital Presence</li>
-                </ul>
-                <div class="scroll-arrow"></div>
+                <h3>DESCRIPTION</h3><p>Eclipse explores the interplay between concealment and clarity.</p>
             </div>
         </div>
     </main>
 
     <script>
-        function toggleMenu() {
-            const wrapper = document.getElementById('menuWrapper');
-            wrapper.classList.toggle('active');
-        }
+        function toggleMenu() { document.getElementById('menuWrapper').classList.toggle('active'); }
     </script>
 </body>
 </html>
