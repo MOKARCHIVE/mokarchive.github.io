@@ -5,9 +5,11 @@
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     
     <style>
+        /* 수정됨: 헤더가 fixed로 고정되므로 본문이 위로 올라가는 것을 방지하기 위해 상단 여백 추가 */
         body { 
             margin: 0; 
             padding: 0; 
+            padding-top: 100px; 
             background-color: #f4f4f4; 
             font-family: 'Pretendard', sans-serif; 
             font-size: 12px; 
@@ -15,22 +17,24 @@
         }
         a { text-decoration: none; color: inherit; display: block; }
 
-        /* 상단바 고정 설정 */
+        /* 수정됨: position을 fixed로 변경하여 스크롤되어도 상단에 고정 */
         .header { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
             gap: 35px; 
             padding: 20px 20px 40px 20px; 
-            position: sticky; 
+            position: fixed; 
             top: 0; 
-            background-color: #f4f4f4; /* 배경색이 있어야 스크롤 시 겹치지 않음 */
-            z-index: 1000;             /* 콘텐츠보다 위에 위치하도록 z-index 높임 */
+            left: 0;
+            width: 100%;
+            background-color: #f4f4f4; 
+            z-index: 1000; 
             font-weight: 500;
             box-sizing: border-box;
             border-bottom: none; 
         }
 
-        /* 헤더 하단 그라데이션 경계선 (헤더 내부의 가상 요소이므로 함께 고정됨) */
+        /* 헤더 하단 그라데이션 경계선 */
         .header::after {
             content: "";
             position: absolute;
@@ -49,44 +53,112 @@
         
         .sub-text { font-weight: 300; } 
         
-        .header-left { display: grid; grid-template-columns: 1fr 1fr; align-items: center; }
+        .header-left { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            align-items: center; 
+        }
         .header-right { display: grid; grid-template-columns: 1fr 1fr; align-items: start; position: relative; }
 
-        .center-text { font-size: 16px; font-weight: 200; display: flex; align-items: center; }
-        .logo-area { display: flex; align-items: flex-start; gap: 10px; }
-        .logo-box { width: 25px; height: 25px; background-color: #000; margin-top: 2px; flex-shrink: 0; }
-
-        .menu-wrapper { position: absolute; right: 0px; top: 2.5px; z-index: 1000; }
-        .menu-btn { 
-            width: 25px; height: 22px; cursor: pointer; margin-left: auto;
-            display: flex; flex-direction: column; justify-content: space-between; padding: 2px; box-sizing: border-box;
+        .center-text {
+            font-size: 16px;
+            font-weight: 200;
+            display: flex;
+            align-items: center;
         }
+
+        .logo-area { display: flex; align-items: flex-start; gap: 10px; }
+        .logo-box { 
+            width: 25px; 
+            height: 25px; 
+            background-color: #000; 
+            margin-top: 2px; 
+            flex-shrink: 0;
+        }
+
+        /* 메뉴 Wrapper */
+        .menu-wrapper {
+            position: absolute;
+            right: 0px;
+            top: 2.5px;
+            z-index: 1000;
+        }
+
+        .menu-btn { 
+            width: 25px; 
+            height: 22px; 
+            cursor: pointer; 
+            margin-left: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2px;
+            box-sizing: border-box;
+            transition: transform 0.3s ease; 
+        }
+
         .menu-btn span {
-            display: block; width: 100%; height: 1.5px;
-            background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 20%, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%);
+            display: block;
+            width: 100%;
+            height: 1.5px;
+            background-color: #000;
+            transition: background-color 0.3s ease;
         }
 
         .menu-list { 
-            display: block; position: absolute; top: 30px; right: 0; background: #f4f4f4; 
-            border: 1px solid #333; padding: 10px; text-align: right; white-space: nowrap;
-            opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
+            display: block; 
+            position: absolute; 
+            top: 30px; 
+            right: 0; 
+            background: #f4f4f4; 
+            border: 1px solid #333; 
+            padding: 10px; 
+            text-align: right; 
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
         }
-        .menu-wrapper:hover .menu-list, .menu-wrapper.active .menu-list { opacity: 1; visibility: visible; }
-        .menu-list div { padding: 5px 0; cursor: pointer; }
 
-        .main-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; padding: 0 20px 20px 20px; margin-top: 40px; }
+        .menu-wrapper:hover .menu-list,
+        .menu-wrapper.active .menu-list { 
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .menu-list div { padding: 5px 0; cursor: pointer; }
+        .menu-list div:hover { text-decoration: underline; }
+
+        .main-wrapper { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 40px; 
+            align-items: start; 
+            padding: 0 20px 20px 20px; 
+            margin-top: 40px; 
+            box-sizing: border-box;
+        }
         
         .content-fixed-section { position: sticky; top: 120px; }
         .content { position: relative; min-height: 400px; padding-bottom: 80px; }
-        .scroll-arrow { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%) rotate(45deg); width: 20px; height: 20px; border-bottom: 1.5px solid #333; border-right: 1.5px solid #333; }
+
+        .scroll-arrow { 
+            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%) rotate(45deg);
+            width: 20px; height: 20px; border-bottom: 1.5px solid #333; border-right: 1.5px solid #333; 
+        }
 
         .image-container { margin-bottom: 20px; }
         .image-container img { width: 100%; display: block; }
         .content h3 { font-size: 11px; margin-top: 30px; margin-bottom: 10px; color: #888; text-transform: uppercase; }
-        
+        .content p { line-height: 1.6; margin: 0; }
+        .content ul { list-style: none; padding: 0; margin: 0; }
+        .content li { margin-bottom: 5px; }
+
         @media (max-width: 768px) {
             .header { grid-template-columns: 1fr; gap: 15px; }
             .header-right > div:not(.menu-wrapper) { display: none; }
+            .header-right { grid-template-columns: 1fr; }
+            
             .main-wrapper { grid-template-columns: 1fr; }
             .content-fixed-section { position: static; }
         }
@@ -107,11 +179,15 @@
             <div><strong>CONTACT</strong><br><span class="sub-text">wjdwoahr_@naver.com</span></div>
             
             <div class="menu-wrapper" id="menuWrapper">
-                <div class="menu-btn" onclick="toggleMenu()">
-                    <span></span><span></span><span></span>
+                <div class="menu-btn" id="menuBtn" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
-                <div class="menu-list">
-                    <div>About</div><div>Project</div><div>Contact</div>
+                <div class="menu-list" id="menuList">
+                    <div>About</div>
+                    <div>Project</div>
+                    <div>Contact</div>
                 </div>
             </div>
         </div>
@@ -127,7 +203,16 @@
         <div class="content-fixed-section">
             <div class="content">
                 <h3>PROJECT</h3><p>Comfortemple</p>
-                <h3>DESCRIPTION</h3><p>Eclipse explores the interplay between concealment and clarity.</p>
+                <h3>PROJECT TYPE</h3><p>Architecture + Interior</p>
+                <h3>DESCRIPTION</h3><p>Eclipse explores the interplay between concealment and clarity—where shadow becomes structure, and light reveals form. This identity system centers around the idea of presence in absence.</p>
+                <h3>SERVICES</h3>
+                <ul>
+                    <li>Brand Strategy</li>
+                    <li>Visual Identity</li>
+                    <li>Art Direction</li>
+                    <li>Typography</li>
+                    <li>Digital Presence</li>
+                </ul>
                 <div class="scroll-arrow"></div>
             </div>
         </div>
@@ -135,7 +220,8 @@
 
     <script>
         function toggleMenu() {
-            document.getElementById('menuWrapper').classList.toggle('active');
+            const wrapper = document.getElementById('menuWrapper');
+            wrapper.classList.toggle('active');
         }
     </script>
 </body>
