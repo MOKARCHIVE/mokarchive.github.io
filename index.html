@@ -22,7 +22,7 @@
             display: grid; 
             grid-template-columns: 1fr 1fr; 
             gap: 35px; 
-            padding: 20px 20px 40px 20px; 
+            padding: 25px 20px 30px 20px; 
             position: fixed; 
             top: 0; 
             left: 0;
@@ -55,16 +55,21 @@
         
         .sub-text { font-weight: 300; } 
         
+        /* 수정됨: Only What Matters를 중앙 정렬하기 위해 구조 변경 */
         .header-left { 
             display: grid; 
-            grid-template-columns: 1fr 1fr; 
+            grid-template-columns: auto 1fr; 
             align-items: center; 
         }
+        .header-left > div:last-child {
+            justify-self: center;
+        }
+
         .header-right { display: grid; grid-template-columns: 1fr 1fr; align-items: start; position: relative; }
 
         .center-text {
-            font-size: 16px;
-            font-weight: 200;
+            font-size: 12px;
+            font-weight: 300;
             display: flex;
             align-items: center;
         }
@@ -174,7 +179,7 @@
                 <div class="logo-box"></div>
                 <div><strong>MOK ARCHIVE</strong><br><span class="sub-text">architecture & interior</span></div>
             </div>
-            <div><span class="center-text">Only What Matters</span></div>
+            <div><span class="center-text">The more we strip away, the more the essence comes into focus</span></div>
         </a>
         <div class="header-right">
             <div><strong>LOCATION</strong><br><span class="sub-text">based in seoul</span></div>
