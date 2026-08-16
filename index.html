@@ -5,7 +5,12 @@
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     
     <style>
-        /* 수정됨: 헤더가 fixed로 고정되므로 본문이 위로 올라가는 것을 방지하기 위해 상단 여백 추가 */
+        /* 스크롤 스냅 설정 */
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
         body { 
             margin: 0; 
             padding: 0; 
@@ -17,7 +22,6 @@
         }
         a { text-decoration: none; color: inherit; display: block; }
 
-        /* 수정됨: position을 fixed로 변경하여 스크롤되어도 상단에 고정 */
         .header { 
             display: grid; 
             grid-template-columns: 1fr 1fr; 
@@ -34,7 +38,6 @@
             border-bottom: none; 
             align-items: center; 
         }
-        
 
         /* 헤더 하단 그라데이션 경계선 */
         .header::after {
@@ -57,7 +60,6 @@
         
         .sub-text { font-weight: 300; } 
         
-        /* 수정됨: Only What Matters를 중앙 정렬하기 위해 구조 변경 */
         .header-left { 
             display: grid; 
             grid-template-columns: auto 1fr; 
@@ -132,34 +134,31 @@
         .menu-list div { padding: 5px 0; cursor: pointer; }
         .menu-list div:hover { text-decoration: underline; }
 
+        /* 전체 레이아웃 (좌: 이미지 스크롤, 우: 고정 텍스트) */
         .main-wrapper { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 40px; 
-            align-items: start; 
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
             padding: 0 60px 20px 60px; 
-            margin-top: 40px; 
+            margin-top: 50px;
             box-sizing: border-box;
         }
-        
-        .content-fixed-section { position: sticky; top: 120px; }
-        .content { position: relative; min-height: 430px; padding-bottom: 80px; }
 
-        .scroll-arrow { 
-            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%) rotate(45deg);
-            width: 20px; height: 20px; border-bottom: 1.5px solid #333; border-right: 1.5px solid #333;
-            /* 애니메이션 추가 */
-            animation: float 1.5s ease-in-out infinite;
+        /* 왼쪽 이미지 스크롤 영역 */
+        .image-scroll-section {
+            display: flex;
+            flex-direction: column;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateX(-50%) translateY(0) rotate(45deg); }
-            50% { transform: translateX(-50%) translateY(-10px) rotate(45deg); }
+        /* 이미지 스냅 아이템 */
+        .image-snap-item {
+            scroll-snap-align: start;
+            scroll-margin-top: 150px;
+            margin-bottom: 80px; /* 다음 이미지가 하단에 걸치도록 지정 */
         }
 
-        /* 수정됨: 720 x 520 비율로 이미지 프레임 고정 */
         .image-container { 
-            margin-bottom: 20px; 
             width: 100%;
             aspect-ratio: 1280 / 720;
             overflow: hidden;
@@ -171,7 +170,34 @@
             display: block; 
         }
 
+        /* 오른쪽 텍스트 고정(Sticky) 영역 및 애니메이션 효과 */
+        .content-fixed-section { 
+            position: sticky; 
+            top: 150px; 
+        }
+        .content { 
+            position: relative; 
+            min-height: 400px; 
+            padding-bottom: 60px;
+            transition: opacity 0.3s ease; /* 전환 효과 */
+        }
+        .content.fade-out {
+            opacity: 0;
+        }
+
+        .scroll-arrow { 
+            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%) rotate(45deg);
+            width: 20px; height: 20px; border-bottom: 1.5px solid #333; border-right: 1.5px solid #333;
+            animation: float 1.5s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateX(-50%) translateY(0) rotate(45deg); }
+            50% { transform: translateX(-50%) translateY(-10px) rotate(45deg); }
+        }
+
         .content h3 { font-size: 11px; margin-top: 30px; margin-bottom: 10px; color: #888; text-transform: uppercase; }
+        .content h3:first-child { margin-top: 0; }
         .content p { line-height: 1.6; margin: 0; }
         .content ul { list-style: none; padding: 0; margin: 0; }
         .content li { margin-bottom: 5px; }
@@ -215,19 +241,41 @@
     </header>
 
     <main class="main-wrapper">
+        <!-- 왼쪽: 이미지 영역 (data-* 속성에 각 항목별 정보 저장) -->
         <div class="image-scroll-section">
-            <div class="image-container"><img src="1.png" alt="Project"></div>
-            <div class="image-container"><img src="2.jpg" alt="Project"></div>
-            <div class="image-container"><img src="your-image.jpg" alt="Project"></div>
+            <div class="image-snap-item" 
+                 data-project="Comfortemple" 
+                 data-type="Architecture + Interior" 
+                 data-desc="Eclipse explores the interplay between concealment and clarity—where shadow becomes structure, and light reveals form. This identity system centers around the idea of presence in absence."
+                 data-services="Brand Strategy,Visual Identity,Art Direction,Typography,Digital Presence">
+                <div class="image-container"><img src="1.png" alt="Project 1"></div>
+            </div>
+
+            <div class="image-snap-item" 
+                 data-project="Second Project Title" 
+                 data-type="Interior Design" 
+                 data-desc="Description for the second project goes here. A seamless transition between minimalist architectural forms and warm interior lighting."
+                 data-services="Interior Architecture,Space Planning,Lighting Design,Custom Furniture">
+                <div class="image-container"><img src="2.jpg" alt="Project 2"></div>
+            </div>
+
+            <div class="image-snap-item" 
+                 data-project="Third Project Title" 
+                 data-type="Branding + Architecture" 
+                 data-desc="A comprehensive approach combining structural elements with identity design to craft timeless modern spaces."
+                 data-services="Visual Identity,Art Direction,Architectural Design,Exhibition">
+                <div class="image-container"><img src="your-image3.jpg" alt="Project 3"></div>
+            </div>
         </div>
 
+        <!-- 오른쪽: 고정 텍스트 영역 -->
         <div class="content-fixed-section">
-            <div class="content">
-                <h3>PROJECT</h3><p>Comfortemple</p>
-                <h3>PROJECT TYPE</h3><p>Architecture + Interior</p>
-                <h3>DESCRIPTION</h3><p>Eclipse explores the interplay between concealment and clarity—where shadow becomes structure, and light reveals form. This identity system centers around the idea of presence in absence.</p>
+            <div class="content" id="contentBox">
+                <h3>PROJECT</h3><p id="textProject">Comfortemple</p>
+                <h3>PROJECT TYPE</h3><p id="textType">Architecture + Interior</p>
+                <h3>DESCRIPTION</h3><p id="textDesc">Eclipse explores the interplay between concealment and clarity—where shadow becomes structure, and light reveals form. This identity system centers around the idea of presence in absence.</p>
                 <h3>SERVICES</h3>
-                <ul>
+                <ul id="textServices">
                     <li>Brand Strategy</li>
                     <li>Visual Identity</li>
                     <li>Art Direction</li>
@@ -244,6 +292,54 @@
             const wrapper = document.getElementById('menuWrapper');
             wrapper.classList.toggle('active');
         }
+
+        // 스크롤 감지 및 텍스트 자동 변경 스크립트
+        document.addEventListener("DOMContentLoaded", () => {
+            const items = document.querySelectorAll(".image-snap-item");
+            const contentBox = document.getElementById("contentBox");
+            const textProject = document.getElementById("textProject");
+            const textType = document.getElementById("textType");
+            const textDesc = document.getElementById("textDesc");
+            const textServices = document.getElementById("textServices");
+
+            const observerOptions = {
+                root: null,
+                rootMargin: "-20% 0px -50% 0px", // 화면 상단 헤더 아래 영역 진입 감지
+                threshold: 0.2
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target;
+                        
+                        // 페이드 아웃 후 내용 교체
+                        contentBox.classList.add("fade-out");
+
+                        setTimeout(() => {
+                            textProject.textContent = target.dataset.project || "";
+                            textType.textContent = target.dataset.type || "";
+                            textDesc.textContent = target.dataset.desc || "";
+
+                            // 서비스 리스트 변경
+                            textServices.innerHTML = "";
+                            if (target.dataset.services) {
+                                const services = target.dataset.services.split(",");
+                                services.forEach(service => {
+                                    const li = document.createElement("li");
+                                    li.textContent = service.trim();
+                                    textServices.appendChild(li);
+                                });
+                            }
+
+                            contentBox.classList.remove("fade-out");
+                        }, 150);
+                    }
+                });
+            }, observerOptions);
+
+            items.forEach((item) => observer.observe(item));
+        });
     </script>
 </body>
 </html>
