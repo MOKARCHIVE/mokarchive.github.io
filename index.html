@@ -196,9 +196,16 @@
             opacity: 0;
         }
 
-       .scroll-arrow { 
-            position: absolute; bottom: -10%; left: 50%; transform: translateX(-50%) rotate(45deg);
-            width: 20px; height: 20px; border-bottom: 1.5px solid #333; border-right: 1.5px solid #333;
+        /* [원래 화살표 스타일 복원] */
+        .scroll-arrow { 
+            position: absolute; 
+            bottom: -10%; 
+            left: 50%; 
+            transform: translateX(-50%) rotate(45deg);
+            width: 20px; 
+            height: 20px; 
+            border-bottom: 1.5px solid #333; 
+            border-right: 1.5px solid #333;
             animation: float 1.5s ease-in-out infinite;
         }
 
@@ -206,7 +213,6 @@
             0%, 100% { transform: translateX(-50%) translateY(0) rotate(45deg); }
             50% { transform: translateX(-50%) translateY(-10px) rotate(45deg); }
         }
-
 
         .content h3 { font-size: 11px; margin-top: 30px; margin-bottom: 10px; color: #888; text-transform: uppercase; }
         .content p { line-height: 1.6; margin: 0; font-size: 12px; }
@@ -368,7 +374,7 @@
                 border-radius: 4px;
             }
 
-            /* [수정 포인트 1] 강제 적용을 위한 CSS 선택자 우선순위 강화 */
+            /* 모바일 프로젝트 제목 (CSS 선택자 강화 및 우선순위 상승) */
             .image-container .mobile-project-title {
                 display: block !important;
                 position: absolute !important;
@@ -376,12 +382,9 @@
                 left: 15px !important;
                 color: #ffffff !important;
                 
-                /* ===================================================
-                   글자 크기 & 굵기 조절 (원하는 수치로 변경하세요)
-                   =================================================== */
-                font-size: 18px !important;    /* 예: 14px, 15px, 16px */
-                font-weight: 600 !important;  /* 예: 400(보통), 500(중간), 600(얇은 굵음) */
-                /* =================================================== */
+                /* 모바일 이미지 내부 글자 크기 및 굵기 설정 */
+                font-size: 20px !important;
+                font-weight: 600 !important;
                 
                 letter-spacing: -0.3px !important;
                 text-transform: uppercase !important;
@@ -450,7 +453,6 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
                         <source media="(max-width: 768px)" srcset="1.png">
                         <img src="1.png" alt="Comfortemple Project">
                     </picture>
-                    <!-- [수정 포인트 2] 인라인 스타일로 폰트 크기(font-size)와 굵기(font-weight) 직접 조절 가능 -->
                     <div class="mobile-project-title" style="font-size: 15px; font-weight: 500;">Comfortemple</div>
                 </div>
             </div>
