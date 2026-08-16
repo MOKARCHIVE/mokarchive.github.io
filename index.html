@@ -151,6 +151,13 @@
             flex-direction: column;
         }
 
+        /* 마지막 요소 스냅 완료를 위한 여백 공간 추가 */
+        .image-scroll-section::after {
+            content: "";
+            display: block;
+            height: calc(100vh - 300px);
+        }
+
         /* 이미지 스냅 아이템 */
         .image-snap-item {
             scroll-snap-align: start;
