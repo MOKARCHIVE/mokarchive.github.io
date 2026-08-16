@@ -197,20 +197,39 @@
         }
 
         .scroll-arrow { 
-            position: absolute; bottom: -10%; left: 50%; transform: translateX(-50%) rotate(45deg);
-            width: 20px; height: 20px; border-bottom: 1.5px solid #333; border-right: 1.5px solid #333;
+            position: absolute; 
+            bottom: -10%; 
+            left: 50%; 
+            transform: translateX(-50%);
+            width: 42px; 
+            height: 42px; 
+            border: 1.5px solid #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
             animation: float 1.5s ease-in-out infinite;
         }
 
+        .scroll-arrow::after {
+            content: "";
+            width: 12px;
+            height: 12px;
+            border-bottom: 2px solid #333;
+            border-right: 2px solid #333;
+            transform: rotate(45deg);
+            margin-top: -4px;
+        }
+
         @keyframes float {
-            0%, 100% { transform: translateX(-50%) translateY(0) rotate(45deg); }
-            50% { transform: translateX(-50%) translateY(-10px) rotate(45deg); }
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-8px); }
         }
 
         .content h3 { font-size: 11px; margin-top: 30px; margin-bottom: 10px; color: #888; text-transform: uppercase; }
         .content p { line-height: 1.6; margin: 0; font-size: 12px; }
         
-        /* [PC 프로젝트 이름 스타일: 상단 밀착 배치 및 아래 여백 조정] */
         #textProject {
             font-size: 30px;
             font-weight: 600;
@@ -219,7 +238,7 @@
             text-transform: uppercase;
             color: #333;
             margin-top: 0;
-            margin-bottom: 30px; /* 기존 30px에서 50px로 변경하여 아래 텍스트와의 간격을 넓힘 */
+            margin-bottom: 30px;
         }
 
         .mobile-project-title {
@@ -368,19 +387,26 @@
                 border-radius: 4px;
             }
 
-            .mobile-project-title {
-                display: block;
-                position: absolute;
-                bottom: 20px;
-                left: 18px;
-                color: #ffffff;
-                font-size: 20px;
-                font-weight: 700;
-                letter-spacing: -0.5px;
-                text-transform: uppercase;
-                text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-                z-index: 2;
-                pointer-events: none;
+            /* [수정 포인트 1] 강제 적용을 위한 CSS 선택자 우선순위 강화 */
+            .image-container .mobile-project-title {
+                display: block !important;
+                position: absolute !important;
+                bottom: 15px !important;
+                left: 15px !important;
+                color: #ffffff !important;
+                
+                /* ===================================================
+                   글자 크기 & 굵기 조절 (원하는 수치로 변경하세요)
+                   =================================================== */
+                font-size: 18px !important;    /* 예: 14px, 15px, 16px */
+                font-weight: 600 !important;  /* 예: 400(보통), 500(중간), 600(얇은 굵음) */
+                /* =================================================== */
+                
+                letter-spacing: -0.3px !important;
+                text-transform: uppercase !important;
+                text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6) !important;
+                z-index: 2 !important;
+                pointer-events: none !important;
             }
 
             .content-fixed-section { 
@@ -443,7 +469,8 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
                         <source media="(max-width: 768px)" srcset="1.png">
                         <img src="1.png" alt="Comfortemple Project">
                     </picture>
-                    <div class="mobile-project-title">Comfortemple</div>
+                    <!-- [수정 포인트 2] 인라인 스타일로 폰트 크기(font-size)와 굵기(font-weight) 직접 조절 가능 -->
+                    <div class="mobile-project-title" style="font-size: 15px; font-weight: 500;">Comfortemple</div>
                 </div>
             </div>
 
@@ -457,7 +484,7 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
                         <source media="(max-width: 768px)" srcset="2.jpg">
                         <img src="2.jpg" alt="Second Project Title">
                     </picture>
-                    <div class="mobile-project-title">Second Project Title</div>
+                    <div class="mobile-project-title" style="font-size: 15px; font-weight: 500;">Second Project Title</div>
                 </div>
             </div>
 
@@ -471,7 +498,7 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
                         <source media="(max-width: 768px)" srcset="your-mobile-image3.jpg">
                         <img src="your-pc-image3.jpg" alt="Third Project Title">
                     </picture>
-                    <div class="mobile-project-title">Third Project Title</div>
+                    <div class="mobile-project-title" style="font-size: 15px; font-weight: 500;">Third Project Title</div>
                 </div>
             </div>
 
@@ -519,7 +546,6 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
                                 textProject.textContent = target.dataset.project || "";
                                 textType.textContent = target.dataset.type || "";
                                 
-                                // 줄바꿈(\n)을 HTML 줄바꿈 태그(<br><br>)로 변환하여 할당
                                 const rawDesc = target.dataset.desc || "";
                                 textDesc.innerHTML = rawDesc.trim().replace(/\n+/g, '<br><br>');
 
