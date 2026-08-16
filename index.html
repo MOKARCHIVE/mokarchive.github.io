@@ -22,7 +22,7 @@
             display: grid; 
             grid-template-columns: 1fr 1fr; 
             gap: 35px; 
-            padding: 30px 60px 35px 60px; 
+            padding: 20px 60px 25px 60px; 
             position: fixed; 
             top: 0; 
             left: 0;
@@ -32,7 +32,9 @@
             font-weight: 500;
             box-sizing: border-box;
             border-bottom: none; 
+            align-items: center; 
         }
+        
 
         /* 헤더 하단 그라데이션 경계선 */
         .header::after {
@@ -41,7 +43,7 @@
             bottom: 0;
             left: 20px;
             right: 20px;
-            height: 1px;
+            height: 0.5px;
             background: linear-gradient(
                 to right, 
                 rgba(160, 160, 160, 0) 0%, 
@@ -74,14 +76,8 @@
             align-items: center;
         }
 
-        .logo-area { display: flex; align-items: flex-start; gap: 10px; }
-        .logo-box { 
-            width: 25px; 
-            height: 25px; 
-            background-color: #000; 
-            margin-top: 2px; 
-            flex-shrink: 0;
-        }
+        .logo-area { display: flex; align-items: center; }
+        .logo-text { font-size: 42px; font-weight: 600; letter-spacing: 1px; line-height: 1; }
 
         /* 메뉴 Wrapper */
         .menu-wrapper {
@@ -147,11 +143,18 @@
         }
         
         .content-fixed-section { position: sticky; top: 120px; }
-        .content { position: relative; min-height: 400px; padding-bottom: 80px; }
+        .content { position: relative; min-height: 430px; padding-bottom: 80px; }
 
         .scroll-arrow { 
             position: absolute; bottom: 0; left: 50%; transform: translateX(-50%) rotate(45deg);
-            width: 20px; height: 20px; border-bottom: 1.5px solid #333; border-right: 1.5px solid #333; 
+            width: 20px; height: 20px; border-bottom: 1.5px solid #333; border-right: 1.5px solid #333;
+            /* 애니메이션 추가 */
+            animation: float 1.5s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateX(-50%) translateY(0) rotate(45deg); }
+            50% { transform: translateX(-50%) translateY(-10px) rotate(45deg); }
         }
 
         .image-container { margin-bottom: 20px; }
@@ -176,8 +179,7 @@
     <header class="header">
         <a href="index.html" class="header-left">
             <div class="logo-area">
-                <div class="logo-box"></div>
-                <div><strong>MOK ARCHIVE</strong><br><span class="sub-text">architecture & interior</span></div>
+                <span class="logo-text">MOK</span>
             </div>
             <div><span class="center-text">The more we strip away, the more the essence comes into focus</span></div>
         </a>
