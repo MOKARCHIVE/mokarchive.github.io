@@ -197,7 +197,7 @@
         }
 
         .scroll-arrow { 
-            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%) rotate(45deg);
+            position: absolute; bottom: -10%; left: 50%; transform: translateX(-50%) rotate(45deg);
             width: 20px; height: 20px; border-bottom: 1.5px solid #333; border-right: 1.5px solid #333;
             animation: float 1.5s ease-in-out infinite;
         }
@@ -210,7 +210,7 @@
         .content h3 { font-size: 11px; margin-top: 30px; margin-bottom: 10px; color: #888; text-transform: uppercase; }
         .content p { line-height: 1.6; margin: 0; font-size: 12px; }
         
-        /* [PC 프로젝트 이름 스타일: 상단 밀착 배치] */
+        /* [PC 프로젝트 이름 스타일: 상단 밀착 배치 및 아래 여백 조정] */
         #textProject {
             font-size: 30px;
             font-weight: 600;
@@ -219,11 +219,8 @@
             text-transform: uppercase;
             color: #333;
             margin-top: 0;
-            margin-bottom: 30px;
+            margin-bottom: 30px; /* 기존 30px에서 50px로 변경하여 아래 텍스트와의 간격을 넓힘 */
         }
-
-        .content ul { list-style: none; padding: 0; margin: 0; }
-        .content li { margin-bottom: 5px; font-size: 12px; }
 
         .mobile-project-title {
             display: none;
@@ -396,7 +393,7 @@
                 margin-bottom: 6px;
             }
 
-            .content p, .content li {
+            .content p {
                 font-size: 13px;
                 line-height: 1.5;
             }
@@ -439,8 +436,8 @@
             <div class="image-snap-item" 
                  data-project="Comfortemple" 
                  data-type="Architecture + Interior" 
-                 data-desc="Eclipse explores the interplay between concealment and clarity—where shadow becomes structure, and light reveals form. This identity system centers around the idea of presence in absence."
-                 data-services="Brand Strategy,Visual Identity,Art Direction,Typography,Digital Presence">
+                 data-desc="자연과 고요한 사찰의 공간 속에서 불교의 비움과 수행의 가치를 현대적으로 경험하며, 일상의 자극과 번잡함에서 벗어나 마음의 평온을 되찾는 스테이 공간.
+Within the tranquility of nature and a Buddhist temple, this stay offers a contemporary experience of Buddhist principles of letting go and spiritual practice, allowing guests to step away from the noise and stimulation of everyday life and rediscover a sense of inner peace.">
                 <div class="image-container">
                     <picture>
                         <source media="(max-width: 768px)" srcset="1.png">
@@ -454,8 +451,7 @@
             <div class="image-snap-item" 
                  data-project="Second Project Title" 
                  data-type="Interior Design" 
-                 data-desc="Description for the second project goes here. A seamless transition between minimalist architectural forms and warm interior lighting."
-                 data-services="Interior Architecture,Space Planning,Lighting Design,Custom Furniture">
+                 data-desc="Description for the second project goes here. A seamless transition between minimalist architectural forms and warm interior lighting.">
                 <div class="image-container">
                     <picture>
                         <source media="(max-width: 768px)" srcset="2.jpg">
@@ -469,8 +465,7 @@
             <div class="image-snap-item" 
                  data-project="Third Project Title" 
                  data-type="Branding + Architecture" 
-                 data-desc="A comprehensive approach combining structural elements with identity design to craft timeless modern spaces."
-                 data-services="Visual Identity,Art Direction,Architectural Design,Exhibition">
+                 data-desc="A comprehensive approach combining structural elements with identity design to craft timeless modern spaces.">
                 <div class="image-container">
                     <picture>
                         <source media="(max-width: 768px)" srcset="your-mobile-image3.jpg">
@@ -485,17 +480,9 @@
         <!-- 오른쪽: 고정 텍스트 영역 (PC용) -->
         <div class="content-fixed-section">
             <div class="content" id="contentBox">
-                <p id="textProject">Comfortemple</p>
-                <h3>PROJECT TYPE</h3><p id="textType">Architecture + Interior</p>
-                <h3>DESCRIPTION</h3><p id="textDesc">Eclipse explores the interplay between concealment and clarity—where shadow becomes structure, and light reveals form. This identity system centers around the idea of presence in absence.</p>
-                <h3>SERVICES</h3>
-                <ul id="textServices">
-                    <li>Brand Strategy</li>
-                    <li>Visual Identity</li>
-                    <li>Art Direction</li>
-                    <li>Typography</li>
-                    <li>Digital Presence</li>
-                </ul>
+                <p id="textProject"></p>
+                <h3>PROJECT TYPE</h3><p id="textType"></p>
+                <h3>DESCRIPTION</h3><p id="textDesc"></p>
                 <div class="scroll-arrow"></div>
             </div>
         </div>
@@ -513,7 +500,6 @@
             const textProject = document.getElementById("textProject");
             const textType = document.getElementById("textType");
             const textDesc = document.getElementById("textDesc");
-            const textServices = document.getElementById("textServices");
 
             const observerOptions = {
                 root: null,
@@ -532,17 +518,10 @@
                             setTimeout(() => {
                                 textProject.textContent = target.dataset.project || "";
                                 textType.textContent = target.dataset.type || "";
-                                textDesc.textContent = target.dataset.desc || "";
-
-                                textServices.innerHTML = "";
-                                if (target.dataset.services) {
-                                    const services = target.dataset.services.split(",");
-                                    services.forEach(service => {
-                                        const li = document.createElement("li");
-                                        li.textContent = service.trim();
-                                        textServices.appendChild(li);
-                                    });
-                                }
+                                
+                                // 줄바꿈(\n)을 HTML 줄바꿈 태그(<br><br>)로 변환하여 할당
+                                const rawDesc = target.dataset.desc || "";
+                                textDesc.innerHTML = rawDesc.trim().replace(/\n+/g, '<br><br>');
 
                                 contentBox.classList.remove("fade-out");
                             }, 150);
