@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     
     <style>
@@ -163,12 +164,14 @@
             scroll-snap-align: start;
             scroll-margin-top: 150px;
             margin-bottom: 80px; /* 다음 이미지가 하단에 걸치도록 지정 */
+            position: relative;
         }
 
         .image-container { 
             width: 100%;
             aspect-ratio: 1280 / 720;
             overflow: hidden;
+            position: relative;
         }
         .image-container img { 
             width: 100%; 
@@ -209,13 +212,102 @@
         .content ul { list-style: none; padding: 0; margin: 0; }
         .content li { margin-bottom: 5px; }
 
+        /* 모바일 세부 타이틀 숨김 처리 (기본 PC) */
+        .mobile-project-title {
+            display: none;
+        }
+
+        /* --- 모바일 전용 스타일 (768px 이하) --- */
         @media (max-width: 768px) {
-            .header { grid-template-columns: 1fr; gap: 15px; }
-            .header-right > div:not(.menu-wrapper) { display: none; }
-            .header-right { grid-template-columns: 1fr; }
-            
-            .main-wrapper { grid-template-columns: 1fr; }
-            .content-fixed-section { position: static; }
+            body {
+                padding-top: 70px;
+            }
+
+            /* 모바일 헤더: MOK 로고와 우측 햄버거 메뉴만 표시 */
+            .header { 
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px 20px; 
+            }
+
+            .header-left {
+                display: block;
+            }
+
+            .header-left > div:last-child {
+                display: none; /* 중앙 문구 숨김 */
+            }
+
+            .logo-text {
+                font-size: 32px;
+            }
+
+            .header-right {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                position: static;
+            }
+
+            .header-right > div:not(.menu-wrapper) { 
+                display: none; /* LOCATION, CONTACT 숨김 */
+            }
+
+            .menu-wrapper {
+                position: relative;
+                top: 0;
+                right: 0;
+            }
+
+            .header::after {
+                left: 0;
+                right: 0;
+                background: #e5e5e5;
+            }
+
+            /* 메인 레이아웃: 이미지 풀너비 적용 */
+            .main-wrapper { 
+                grid-template-columns: 1fr; 
+                padding: 15px;
+                margin-top: 0;
+                gap: 0;
+            }
+
+            .image-scroll-section::after {
+                display: none;
+            }
+
+            .image-snap-item {
+                scroll-margin-top: 80px;
+                margin-bottom: 15px;
+            }
+
+            /* 이미지 비율: 세로 풀 뷰(WGNB 스타일) */
+            .image-container {
+                aspect-ratio: 3 / 4;
+            }
+
+            /* 이미지 좌측 하단 타이틀 노출 */
+            .mobile-project-title {
+                display: block;
+                position: absolute;
+                bottom: 25px;
+                left: 20px;
+                color: #ffffff;
+                font-size: 24px;
+                font-weight: 700;
+                letter-spacing: -0.5px;
+                text-transform: uppercase;
+                text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+                z-index: 2;
+                pointer-events: none;
+            }
+
+            /* 오른쪽 고정 텍스트 영역 숨김 */
+            .content-fixed-section { 
+                display: none;
+            }
         }
     </style>
 </head>
@@ -255,7 +347,10 @@
                  data-type="Architecture + Interior" 
                  data-desc="Eclipse explores the interplay between concealment and clarity—where shadow becomes structure, and light reveals form. This identity system centers around the idea of presence in absence."
                  data-services="Brand Strategy,Visual Identity,Art Direction,Typography,Digital Presence">
-                <div class="image-container"><img src="1.png" alt="Project 1"></div>
+                <div class="image-container">
+                    <img src="1.png" alt="Project 1">
+                    <div class="mobile-project-title">Comfortemple</div>
+                </div>
             </div>
 
             <div class="image-snap-item" 
@@ -263,7 +358,10 @@
                  data-type="Interior Design" 
                  data-desc="Description for the second project goes here. A seamless transition between minimalist architectural forms and warm interior lighting."
                  data-services="Interior Architecture,Space Planning,Lighting Design,Custom Furniture">
-                <div class="image-container"><img src="2.jpg" alt="Project 2"></div>
+                <div class="image-container">
+                    <img src="2.jpg" alt="Project 2">
+                    <div class="mobile-project-title">Second Project Title</div>
+                </div>
             </div>
 
             <div class="image-snap-item" 
@@ -271,7 +369,10 @@
                  data-type="Branding + Architecture" 
                  data-desc="A comprehensive approach combining structural elements with identity design to craft timeless modern spaces."
                  data-services="Visual Identity,Art Direction,Architectural Design,Exhibition">
-                <div class="image-container"><img src="your-image3.jpg" alt="Project 3"></div>
+                <div class="image-container">
+                    <img src="your-image3.jpg" alt="Project 3">
+                    <div class="mobile-project-title">Third Project Title</div>
+                </div>
             </div>
         </div>
 
@@ -321,26 +422,28 @@
                         const target = entry.target;
                         
                         // 페이드 아웃 후 내용 교체
-                        contentBox.classList.add("fade-out");
+                        if (contentBox) {
+                            contentBox.classList.add("fade-out");
 
-                        setTimeout(() => {
-                            textProject.textContent = target.dataset.project || "";
-                            textType.textContent = target.dataset.type || "";
-                            textDesc.textContent = target.dataset.desc || "";
+                            setTimeout(() => {
+                                textProject.textContent = target.dataset.project || "";
+                                textType.textContent = target.dataset.type || "";
+                                textDesc.textContent = target.dataset.desc || "";
 
-                            // 서비스 리스트 변경
-                            textServices.innerHTML = "";
-                            if (target.dataset.services) {
-                                const services = target.dataset.services.split(",");
-                                services.forEach(service => {
-                                    const li = document.createElement("li");
-                                    li.textContent = service.trim();
-                                    textServices.appendChild(li);
-                                });
-                            }
+                                // 서비스 리스트 변경
+                                textServices.innerHTML = "";
+                                if (target.dataset.services) {
+                                    const services = target.dataset.services.split(",");
+                                    services.forEach(service => {
+                                        const li = document.createElement("li");
+                                        li.textContent = service.trim();
+                                        textServices.appendChild(li);
+                                    });
+                                }
 
-                            contentBox.classList.remove("fade-out");
-                        }, 150);
+                                contentBox.classList.remove("fade-out");
+                            }, 150);
+                        }
                     }
                 });
             }, observerOptions);
