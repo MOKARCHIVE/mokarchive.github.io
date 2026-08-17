@@ -135,8 +135,8 @@
             display: none;
             flex-direction: column;
             justify-content: space-between;
-            width: 22px;
-            height: 16px;
+            width: 18px;
+            height: 13px;
             background: none;
             border: none;
             cursor: pointer;
@@ -154,13 +154,13 @@
         }
 
         .hamburger-btn.active span:nth-child(1) {
-            transform: translateY(7px) rotate(45deg);
+            transform: translateY(5.5px) rotate(45deg);
         }
         .hamburger-btn.active span:nth-child(2) {
             opacity: 0;
         }
         .hamburger-btn.active span:nth-child(3) {
-            transform: translateY(-7.5px) rotate(-45deg);
+            transform: translateY(-5.5px) rotate(-45deg);
         }
 
         /* 전체 레이아웃 */
@@ -220,7 +220,7 @@
             opacity: 0;
         }
 
-        /* View Project 버튼 수정: 기본 #333 배경 설정 */
+        /* View Project 버튼 */
         .project-link-btn {
             display: inline-block;
             margin-top: 35px;
@@ -266,13 +266,13 @@
             font-weight: 600;
             line-height: 1.1;
             letter-spacing: -0.5px;
-            text-transform: uppercase;
+            text-transform: none;
             color: #333;
             margin-top: 0;
             margin-bottom: 30px;
         }
 
-        .mobile-project-title {
+        .mobile-info-group {
             display: none;
         }
 
@@ -296,15 +296,17 @@
             .header { 
                 display: flex;
                 justify-content: space-between;
-                padding: 15px 20px; 
+                align-items: flex-end;
+                padding: 15px 20px 12px 20px; 
             }
 
             .logo-text { 
-                font-size: 28px; 
+                font-size: 40px; 
             }
 
             .hamburger-btn {
                 display: flex;
+                margin-bottom: 4px;
             }
 
             .header-right {
@@ -346,7 +348,7 @@
             }
 
             .image-snap-item {
-                margin-bottom: 30px;
+                margin-bottom: 40px;
                 scroll-snap-align: start;
                 scroll-margin-top: 80px;
             }
@@ -354,22 +356,35 @@
             .image-container {
                 aspect-ratio: 16 / 9;
                 min-height: unset;
-                border-radius: 4px;
+                border-radius: 2px;
             }
 
-            .image-container .mobile-project-title {
-                display: block !important;
-                position: absolute !important;
-                bottom: 15px !important;
-                left: 15px !important;
-                color: #ffffff !important;
-                font-size: 18px !important;
-                font-weight: 700 !important;
-                letter-spacing: -0.3px !important;
-                text-transform: uppercase !important;
-                text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6) !important;
-                z-index: 2 !important;
-                pointer-events: none !important;
+            /* 모바일 하단 타이틀 & 설명 영역 */
+            .mobile-info-group {
+                display: block;
+                margin-top: 14px;
+                padding-top: 2px;
+            }
+
+            .mobile-project-title {
+                color: #222222;
+                font-size: 16px;
+                font-weight: 500;
+                letter-spacing: -0.2px;
+                margin-bottom: 6px;
+            }
+
+            .mobile-project-desc {
+                color: #666666;
+                font-size: 12.5px;
+                line-height: 1.5;
+                font-weight: 400;
+                /* 2줄 초과 시 말줄임 처리 */
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
             .content-fixed-section { 
@@ -410,56 +425,66 @@
     </header>
 
     <main class="main-wrapper">
-        <!-- 왼쪽: 이미지 영역 -->
+        <!-- 왼쪽: 이미지 스크롤 영역 -->
         <div class="image-scroll-section" id="imageScrollSection">
             
             <!-- 프로젝트 1 -->
-            <div class="image-snap-item" 
+            <a href="project-comfortemple.html" class="image-snap-item" 
                  data-project="Comfortemple" 
                  data-type="[2023.10] Architecture + Interior" 
                  data-link="project-comfortemple.html"
-                 data-desc="자연과 고요한 사찰의 공간 속에서 불교의 비움과 수행의 가치를 현대적으로 경험하며, 일상의 자극과 번잡함에서 벗어나 마음의 평온을 되찾는 스테이 공간.
-a contemporary retreat inspired by Buddhist principles of letting go, where nature and stillness create a space for reflection and inner peace.">
+                 data-pc-desc="자연과 고요한 사찰의 공간 속에서 불교의 비움과 수행의 가치를 현대적으로 경험하며, 일상의 자극과 번잡함에서 벗어나 마음의 평온을 되찾는 스테이 공간.
+a contemporary retreat inspired by Buddhist principles of letting go, where nature and stillness create a space for reflection and inner peace."
+                 data-mobile-desc="자연과 고요한 사찰의 공간 속에서 불교의 비움과 수행의 가치를 현대적으로 경험하는 스테이 공간입니다.">
                 <div class="image-container">
                     <picture>
                         <source media="(max-width: 768px)" srcset="1.png">
                         <img src="1.png" alt="Comfortemple Project">
                     </picture>
-                    <div class="mobile-project-title" style="font-size: 15px; font-weight: 500;">Comfortemple</div>
                 </div>
-            </div>
+                <div class="mobile-info-group">
+                    <div class="mobile-project-title">Comfortemple</div>
+                    <div class="mobile-project-desc">a contemporary retreat inspired by Buddhist principles of letting go, where nature and stillness create a space for reflection and inner peace.</div>
+                </div>
+            </a>
 
             <!-- 프로젝트 2 -->
-            <div class="image-snap-item" 
-                 data-project="Second Project Title" 
+            <a href="project-second.html" class="image-snap-item" 
+                 data-project="Melbourne Home" 
                  data-type="[2026.05] Interior" 
                  data-link="project-second.html"
-                 data-desc="자연과 고요한 사찰의 공간 속에서 불교의 비움과 수행의 가치를 현대적으로 경험하며, 일상의 자극과 번잡함에서 벗어나 마음의 평온을 되찾는 스테이 공간.
-Description for the second project goes here. A seamless transition between minimalist architectural forms and warm interior lighting.">
+                 data-pc-desc="Here, the boundary between the indoor and outdoor spaces has not been deliberately eliminated. Instead, it becomes even more distinct and refined through minimal architecture and soft lighting."
+                 data-mobile-desc="Here, the boundary between the indoor and outdoor spaces has not been deliberately eliminated. Instead, it becomes even more distinct...">
                 <div class="image-container">
                     <picture>
                         <source media="(max-width: 768px)" srcset="2.jpg">
-                        <img src="2.jpg" alt="Second Project Title">
+                        <img src="2.jpg" alt="Melbourne Home">
                     </picture>
-                    <div class="mobile-project-title" style="font-size: 15px; font-weight: 500;">Second Project Title</div>
                 </div>
-            </div>
+                <div class="mobile-info-group">
+                    <div class="mobile-project-title">Melbourne Home</div>
+                    <div class="mobile-project-desc">Here, the boundary between the indoor and outdoor spaces has not been deliberately eliminated. Instead, it becomes even more distinct...</div>
+                </div>
+            </a>
 
             <!-- 프로젝트 3 -->
-            <div class="image-snap-item" 
+            <a href="project-third.html" class="image-snap-item" 
                  data-project="Third Project Title" 
                  data-type="[2026.07] Interior" 
                  data-link="project-third.html"
-                 data-desc="자연과 고요한 사찰의 공간 속에서 불교의 비움과 수행의 가치를 현대적으로 경험하며, 일상의 자극과 번잡함에서 벗어나 마음의 평온을 되찾는 스테이 공간.
-A comprehensive approach combining structural elements with identity design to craft timeless modern spaces.">
+                 data-pc-desc="A comprehensive approach combining structural elements with identity design to craft timeless modern architectural spaces for urban residential living."
+                 data-mobile-desc="A comprehensive approach combining structural elements with identity design to craft timeless modern spaces.">
                 <div class="image-container">
                     <picture>
                         <source media="(max-width: 768px)" srcset="3.jpg">
                         <img src="3.jpg" alt="Third Project Title">
                     </picture>
-                    <div class="mobile-project-title" style="font-size: 15px; font-weight: 500;">Third Project Title</div>
                 </div>
-            </div>
+                <div class="mobile-info-group">
+                    <div class="mobile-project-title">Third Project Title</div>
+                    <div class="mobile-project-desc">A comprehensive approach combining structural elements with identity design to craft timeless modern spaces.</div>
+                </div>
+            </a>
 
         </div>
 
@@ -580,7 +605,8 @@ A comprehensive approach combining structural elements with identity design to c
                     textProject.textContent = target.dataset.project || "";
                     textType.textContent = target.dataset.type || "";
 
-                    const rawDesc = target.dataset.desc || "";
+                    /* PC 전용 설명글(data-pc-desc) 적용 */
+                    const rawDesc = target.dataset.pcDesc || "";
                     textDesc.innerHTML = rawDesc.trim().replace(/\n+/g, '<br><br>');
 
                     if (projectLinkBtn) {
