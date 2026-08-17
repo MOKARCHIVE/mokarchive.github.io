@@ -196,6 +196,25 @@
             opacity: 0;
         }
 
+        /* 프로젝트 바로가기 버튼 스타일 추가 */
+        .project-link-btn {
+            display: inline-block;
+            margin-top: 35px;
+            padding: 10px 28px;
+            border: 1px solid #333;
+            border-radius: 20px;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            color: #333;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .project-link-btn:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
         /* [원래 화살표 스타일 복원] */
         .scroll-arrow { 
             position: absolute; 
@@ -446,6 +465,7 @@
             <div class="image-snap-item" 
                  data-project="Comfortemple" 
                  data-type="Architecture + Interior" 
+                 data-link="project-comfortemple.html"
                  data-desc="자연과 고요한 사찰의 공간 속에서 불교의 비움과 수행의 가치를 현대적으로 경험하며, 일상의 자극과 번잡함에서 벗어나 마음의 평온을 되찾는 스테이 공간.
 Within the tranquility of nature and a Buddhist temple, this stay offers a contemporary experience of Buddhist principles of letting go and spiritual practice, allowing guests to step away from the noise and stimulation of everyday life and rediscover a sense of inner peace.">
                 <div class="image-container">
@@ -461,6 +481,7 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
             <div class="image-snap-item" 
                  data-project="Second Project Title" 
                  data-type="Interior Design" 
+                 data-link="project-second.html"
                  data-desc="Description for the second project goes here. A seamless transition between minimalist architectural forms and warm interior lighting.">
                 <div class="image-container">
                     <picture>
@@ -475,6 +496,7 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
             <div class="image-snap-item" 
                  data-project="Third Project Title" 
                  data-type="Branding + Architecture" 
+                 data-link="project-third.html"
                  data-desc="A comprehensive approach combining structural elements with identity design to craft timeless modern spaces.">
                 <div class="image-container">
                     <picture>
@@ -493,6 +515,12 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
                 <p id="textProject"></p>
                 <h3>PROJECT TYPE</h3><p id="textType"></p>
                 <h3>DESCRIPTION</h3><p id="textDesc"></p>
+                
+                <!-- 프로젝트 바로가기 버튼 추가 -->
+                <div>
+                    <a href="#" id="projectLinkBtn" class="project-link-btn">View Project</a>
+                </div>
+
                 <div class="scroll-arrow"></div>
             </div>
         </div>
@@ -510,6 +538,7 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
             const textProject = document.getElementById("textProject");
             const textType = document.getElementById("textType");
             const textDesc = document.getElementById("textDesc");
+            const projectLinkBtn = document.getElementById("projectLinkBtn");
 
             const observerOptions = {
                 root: null,
@@ -531,6 +560,10 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
                                 
                                 const rawDesc = target.dataset.desc || "";
                                 textDesc.innerHTML = rawDesc.trim().replace(/\n+/g, '<br><br>');
+
+                                if (projectLinkBtn) {
+                                    projectLinkBtn.href = target.dataset.link || "#";
+                                }
 
                                 contentBox.classList.remove("fade-out");
                             }, 150);
