@@ -586,7 +586,14 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
             }, 1000);
         }
 
-        window.addEventListener("resize", updateLinePosition);
+        window.addEventListener("resize", () => {
+            updateLinePosition();
+            
+            // 화면 크기 변경 시 모바일 반응형 처리
+            if (window.innerWidth <= 768) {
+                stopAutoScroll();
+            }
+        });
 
         function toggleMenu() {
             const wrapper = document.getElementById('menuWrapper');
@@ -596,6 +603,15 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
         // ==========================================
         // 무한 루프 스크롤 & 관측 & 자동 스크롤 로직
         // ==========================================
+        let autoScrollTimer = null;
+
+        function stopAutoScroll() {
+            if (autoScrollTimer) {
+                clearInterval(autoScrollTimer);
+                autoScrollTimer = null;
+            }
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
             const scrollContainer = document.getElementById("imageScrollSection");
             const contentBox = document.getElementById("contentBox");
@@ -607,7 +623,6 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
             const initialItems = Array.from(scrollContainer.querySelectorAll(".image-snap-item"));
             let observer = null;
             let currentActiveIndex = 0;
-            let autoScrollTimer = null;
             let userActivityTimeout = null;
 
             // 프로젝트 정보 업데이트 함수
@@ -674,23 +689,21 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
                 }
             }
 
-            // 자동 스크롤 시작
+            // 자동 스크롤 시작 (모바일에선 동작 방지)
             function startAutoScroll() {
                 stopAutoScroll();
+                
+                // 모바일 환경(768px 이하)일 경우 자동 스크롤을 실행하지 않음
+                if (window.innerWidth <= 768) return;
+
                 autoScrollTimer = setInterval(scrollToNextProject, 4000);
             }
 
-            // 자동 스크롤 정지
-            function stopAutoScroll() {
-                if (autoScrollTimer) {
-                    clearInterval(autoScrollTimer);
-                    autoScrollTimer = null;
-                }
-            }
-
-            // 사용자 조작 발생 시: 일시 정지 후 3초 뒤 자동 스크롤 재개
+            // 사용자 조작 발생 시: 일시 정지 후 3초 뒤 자동 스크롤 재개 (PC 환경 전용)
             function handleUserInteraction() {
                 stopAutoScroll();
+
+                if (window.innerWidth <= 768) return;
 
                 if (userActivityTimeout) {
                     clearTimeout(userActivityTimeout);
