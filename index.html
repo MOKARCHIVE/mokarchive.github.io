@@ -82,21 +82,15 @@
             overflow-y: auto;
         }
 
-        @media (max-width: 768px) {
-            .intro-line {
-                left: 15px;
-                right: 15px;
-                height: 0.8px;
-            }
-        }
-
         a { text-decoration: none; color: inherit; display: block; }
 
+        /* 헤더 레이아웃 */
         .header { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 35px; 
-            padding: 20px 60px 25px 60px; 
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 50px;
+            align-items: center; 
+            padding: 15px 60px 20px 60px; 
             position: fixed; 
             top: 0; 
             left: 0;
@@ -105,95 +99,78 @@
             z-index: 1000; 
             font-weight: 500;
             box-sizing: border-box;
-            border-bottom: none; 
-            align-items: center; 
         }
 
-        .sub-text { font-weight: 300; } 
-        
         .header-left { 
-            display: grid; 
-            grid-template-columns: auto 1fr; 
+            display: flex; 
             align-items: center; 
-        }
-        .header-left > div:last-child {
-            justify-self: center;
-        }
-
-        .header-right { display: grid; grid-template-columns: 1fr 1fr; align-items: start; position: relative; }
-
-        .center-text {
-            font-size: 12px;
-            font-weight: 300;
-            display: flex;
-            align-items: center;
-            white-space: nowrap;
         }
 
         .logo-area { display: flex; align-items: center; }
-        .logo-text { font-size: 42px; font-weight: 600; letter-spacing: 1px; line-height: 1; }
+        .logo-text { font-size: 60px; font-weight: 600; letter-spacing: 1px; line-height: 1; }
 
-        /* 메뉴 Wrapper */
-        .menu-wrapper {
-            position: absolute;
-            right: 0px;
-            top: 2.5px;
-            z-index: 1000;
+        /* 데스크톱 네비게이션 */
+        .header-right { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            width: 100%;
         }
 
-        .menu-btn { 
-            width: 25px; 
-            height: 22px; 
-            cursor: pointer; 
-            margin-left: auto;
-            display: flex;
+        .nav-item {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .nav-item:hover {
+            opacity: 0.5;
+        }
+
+        /* 모바일 햄버거 버튼 */
+        .hamburger-btn {
+            display: none;
             flex-direction: column;
             justify-content: space-between;
-            padding: 2px;
-            box-sizing: border-box;
-            transition: transform 0.3s ease; 
+            width: 22px;
+            height: 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+            justify-self: end;
         }
 
-        .menu-btn span {
+        .hamburger-btn span {
             display: block;
             width: 100%;
             height: 1.5px;
-            background-color: #000;
-            transition: background-color 0.3s ease;
+            background-color: #333;
+            transition: all 0.3s ease;
         }
 
-        .menu-list { 
-            display: block; 
-            position: absolute; 
-            top: 30px; 
-            right: 0; 
-            background: #ffffff; 
-            border: 1px solid #333; 
-            padding: 10px; 
-            text-align: right; 
-            white-space: nowrap;
+        .hamburger-btn.active span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        .hamburger-btn.active span:nth-child(2) {
             opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .hamburger-btn.active span:nth-child(3) {
+            transform: translateY(-7.5px) rotate(-45deg);
         }
 
-        .menu-wrapper:hover .menu-list,
-        .menu-wrapper.active .menu-list { 
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .menu-list div { padding: 5px 0; cursor: pointer; }
-        .menu-list div:hover { text-decoration: underline; }
-
-        /* 전체 레이아웃 (좌: 이미지 스크롤, 우: 고정 텍스트) */
+        /* 전체 레이아웃 */
         .main-wrapper { 
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 50px;
             align-items: start;
             padding: 0 60px 20px 60px; 
-            margin-top: 50px;
+            margin-top: 30px;
             box-sizing: border-box;
         }
 
@@ -203,18 +180,19 @@
             flex-direction: column;
         }
 
-        /* 2. 상단 수평 정렬을 위한 스냅 옵션 수정 */
         .image-snap-item {
-            margin-bottom: 120px; /* 아이템 간 여백 확대 */
+            margin-bottom: 40px;
             position: relative;
-            scroll-snap-align: start; /* 이미지 상단을 스냅 기준선으로 설정 */
+            scroll-snap-align: start;
             scroll-snap-stop: always;
-            scroll-margin-top: 150px; /* sticky top (150px) 위치와 완벽히 맞춤 */
+            scroll-margin-top: 130px;
         }
 
+        /* 이미지 비율 16:9 */
         .image-container { 
             width: 100%;
-            aspect-ratio: 1280 / 720;
+            aspect-ratio: 16 / 9;
+            min-height: unset;
             overflow: hidden;
             position: relative;
         }
@@ -228,7 +206,8 @@
         /* 오른쪽 텍스트 고정(Sticky) 영역 */
         .content-fixed-section { 
             position: sticky; 
-            top: 150px; /* 이미지의 scroll-margin-top과 일치 */
+            top: 130px;
+            padding-left: 0;
         }
 
         .content { 
@@ -241,6 +220,7 @@
             opacity: 0;
         }
 
+        /* View Project 버튼 수정: 기본 #333 배경 설정 */
         .project-link-btn {
             display: inline-block;
             margin-top: 35px;
@@ -249,14 +229,16 @@
             border-radius: 20px;
             font-size: 11px;
             letter-spacing: 0.5px;
-            color: #333;
+            background-color: #333;
+            color: #ffffff;
             text-align: center;
             transition: all 0.3s ease;
         }
 
         .project-link-btn:hover {
-            background-color: #333;
-            color: #fff;
+            background-color: #555555;
+            border-color: #555555;
+            color: #ffffff;
         }
 
         .scroll-arrow { 
@@ -280,9 +262,9 @@
         .content p { line-height: 1.6; margin: 0; font-size: 12px; }
         
         #textProject {
-            font-size: 30px;
+            font-size: 36px;
             font-weight: 600;
-            line-height: 1; /* 상단 정렬을 유지를 위한 라인 하이트 축소 */
+            line-height: 1.1;
             letter-spacing: -0.5px;
             text-transform: uppercase;
             color: #333;
@@ -294,122 +276,84 @@
             display: none;
         }
 
-        /* 모바일 전용 스타일 (768px 이하) */
+        /* 모바일 반응형 (768px 이하) */
         @media (max-width: 768px) {
+            html {
+                scroll-snap-type: y proximity;
+            }
+
             body {
-                padding-top: 100px;
+                padding-top: 70px;
                 font-size: 14px;
+            }
+
+            .intro-line {
+                left: 15px;
+                right: 15px;
+                height: 0.8px;
             }
 
             .header { 
                 display: flex;
                 justify-content: space-between;
-                align-items: flex-end; 
-                padding: 15px 20px 15px 20px; 
-                position: fixed;
-            }
-
-            .header-left { 
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                flex: 1;
-                margin-right: 15px;
-                overflow: hidden;
-            }
-
-            .logo-area {
-                display: block;
-                margin: 0;
-                padding: 0;
+                padding: 15px 20px; 
             }
 
             .logo-text { 
-                font-size: 42px; 
-                font-weight: 600; 
-                letter-spacing: 1px; 
-                line-height: 1; 
-                display: block;
-                margin: 0;
-                padding: 0;
-            }
-            
-            .header-left > div:last-child { 
-                display: block; 
-                width: 100%;
-                margin: 24px 0 0 0;
-                padding: 0;
-                text-align: left;
-                overflow: hidden;
+                font-size: 28px; 
             }
 
-            .center-text {
-                font-size: clamp(8px, 2.3vw, 11px);
-                white-space: nowrap;
-                display: block;
-                text-align: left;
-                letter-spacing: -0.3px;
-                line-height: 1.2;
-                color: #666;
-                margin: 0;
-                padding: 0 0 0 2px;
-                transform: translateX(-1px);
+            .hamburger-btn {
+                display: flex;
             }
 
             .header-right {
-                display: flex;
-                justify-content: flex-end;
-                align-items: flex-end;
-                position: static;
-                flex-shrink: 0;
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: #ffffff;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px 25px 30px 25px;
+                gap: 18px;
+                box-sizing: border-box;
+                border-bottom: 1px solid #eee;
+                transform: translateY(-150%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.35s ease-in-out;
+                z-index: 999;
             }
 
-            .header-right > div:not(.menu-wrapper) { 
-                display: none; 
+            .header-right.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
             }
 
-            .menu-wrapper {
-                position: relative;
-                top: 0;
-                right: 0;
-            }
-
-            .menu-btn { 
-                width: 26px; 
-                height: 20px; 
-                padding: 2px;
-                margin-bottom: 1px;
-            }
-
-            .menu-btn span {
-                height: 1.5px;
-            }
-
-            .menu-list {
-                top: 30px;
-                padding: 12px 16px;
-                font-size: 14px;
-            }
-
-            .menu-list div {
-                padding: 8px 0;
+            .nav-item {
+                font-size: 13px;
+                font-weight: 500;
+                width: 100%;
             }
 
             .main-wrapper { 
                 grid-template-columns: 1fr; 
                 padding: 15px;
-                margin-top: 30px;
+                margin-top: 10px;
                 gap: 0;
             }
 
             .image-snap-item {
-                margin-bottom: 25px;
+                margin-bottom: 30px;
                 scroll-snap-align: start;
-                scroll-margin-top: 120px;
+                scroll-margin-top: 80px;
             }
 
             .image-container {
-                aspect-ratio: 4 / 3;
+                aspect-ratio: 16 / 9;
+                min-height: unset;
                 border-radius: 4px;
             }
 
@@ -431,17 +375,6 @@
             .content-fixed-section { 
                 display: none; 
             }
-
-            .content h3 {
-                font-size: 12px;
-                margin-top: 20px;
-                margin-bottom: 6px;
-            }
-
-            .content p {
-                font-size: 13px;
-                line-height: 1.5;
-            }
         }
     </style>
 </head>
@@ -456,25 +389,24 @@
             <div class="logo-area">
                 <span class="logo-text">MOK</span>
             </div>
-            <div><span class="center-text">The more we strip away, the more the essence comes into focus</span></div>
         </a>
-        <div class="header-right">
-            <div><strong>LOCATION</strong><br><span class="sub-text">based in seoul</span></div>
-            <div><strong>CONTACT</strong><br><span class="sub-text">wjdwoahr_@naver.com</span></div>
-            
-            <div class="menu-wrapper" id="menuWrapper">
-                <div class="menu-btn" id="menuBtn" onclick="toggleMenu()">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-                <div class="menu-list" id="menuList">
-                    <div>About</div>
-                    <div>Project</div>
-                    <div>Contact</div>
-                </div>
-            </div>
-        </div>
+        
+        <!-- 우측 메뉴 버튼 -->
+        <nav class="header-right" id="navMenu">
+            <a href="about.html" class="nav-item">ABOUT</a>
+            <a href="project.html" class="nav-item">PROJECT</a>
+            <a href="instagram.html" class="nav-item">INSTAGRAM</a>
+            <a href="behance.html" class="nav-item">BEHANCE</a>
+            <a href="youtube.html" class="nav-item">YOUTUBE</a>
+            <a href="contact.html" class="nav-item">CONTACT</a>
+        </nav>
+
+        <!-- 햄버거 토글 버튼 (모바일 전용) -->
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="메뉴 열기">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </header>
 
     <main class="main-wrapper">
@@ -487,7 +419,7 @@
                  data-type="[2023.10] Architecture + Interior" 
                  data-link="project-comfortemple.html"
                  data-desc="자연과 고요한 사찰의 공간 속에서 불교의 비움과 수행의 가치를 현대적으로 경험하며, 일상의 자극과 번잡함에서 벗어나 마음의 평온을 되찾는 스테이 공간.
-Within the tranquility of nature and a Buddhist temple, this stay offers a contemporary experience of Buddhist principles of letting go and spiritual practice, allowing guests to step away from the noise and stimulation of everyday life and rediscover a sense of inner peace.">
+a contemporary retreat inspired by Buddhist principles of letting go, where nature and stillness create a space for reflection and inner peace.">
                 <div class="image-container">
                     <picture>
                         <source media="(max-width: 768px)" srcset="1.png">
@@ -500,9 +432,10 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
             <!-- 프로젝트 2 -->
             <div class="image-snap-item" 
                  data-project="Second Project Title" 
-                 data-type="Interior Design" 
+                 data-type="[2026.05] Interior" 
                  data-link="project-second.html"
-                 data-desc="Description for the second project goes here. A seamless transition between minimalist architectural forms and warm interior lighting.">
+                 data-desc="자연과 고요한 사찰의 공간 속에서 불교의 비움과 수행의 가치를 현대적으로 경험하며, 일상의 자극과 번잡함에서 벗어나 마음의 평온을 되찾는 스테이 공간.
+Description for the second project goes here. A seamless transition between minimalist architectural forms and warm interior lighting.">
                 <div class="image-container">
                     <picture>
                         <source media="(max-width: 768px)" srcset="2.jpg">
@@ -515,9 +448,10 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
             <!-- 프로젝트 3 -->
             <div class="image-snap-item" 
                  data-project="Third Project Title" 
-                 data-type="Branding + Architecture" 
+                 data-type="[2026.07] Interior" 
                  data-link="project-third.html"
-                 data-desc="A comprehensive approach combining structural elements with identity design to craft timeless modern spaces.">
+                 data-desc="자연과 고요한 사찰의 공간 속에서 불교의 비움과 수행의 가치를 현대적으로 경험하며, 일상의 자극과 번잡함에서 벗어나 마음의 평온을 되찾는 스테이 공간.
+A comprehensive approach combining structural elements with identity design to craft timeless modern spaces.">
                 <div class="image-container">
                     <picture>
                         <source media="(max-width: 768px)" srcset="3.jpg">
@@ -536,7 +470,6 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
                 <h3>PROJECT TYPE</h3><p id="textType"></p>
                 <h3>DESCRIPTION</h3><p id="textDesc"></p>
                 
-                <!-- 프로젝트 바로가기 버튼 -->
                 <div>
                     <a href="#" id="projectLinkBtn" class="project-link-btn">View Project</a>
                 </div>
@@ -586,23 +519,37 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
             }, 1000);
         }
 
+        /* 모바일 햄버거 메뉴 토글 로직 */
+        const hamburgerBtn = document.getElementById("hamburgerBtn");
+        const navMenu = document.getElementById("navMenu");
+
+        hamburgerBtn.addEventListener("click", () => {
+            hamburgerBtn.classList.toggle("active");
+            navMenu.classList.toggle("active");
+        });
+
+        /* 모바일 메뉴 항목 클릭 시 메뉴 닫기 */
+        document.querySelectorAll(".nav-item").forEach(item => {
+            item.addEventListener("click", () => {
+                hamburgerBtn.classList.remove("active");
+                navMenu.classList.remove("active");
+            });
+        });
+
         window.addEventListener("resize", () => {
             updateLinePosition();
             
-            // 화면 크기 변경 시 모바일 반응형 처리
             if (window.innerWidth <= 768) {
                 stopAutoScroll();
+            } else {
+                hamburgerBtn.classList.remove("active");
+                navMenu.classList.remove("active");
             }
         });
 
-        function toggleMenu() {
-            const wrapper = document.getElementById('menuWrapper');
-            wrapper.classList.toggle('active');
-        }
-
-        // ==========================================
-        // 무한 루프 스크롤 & 관측 & 자동 스크롤 로직
-        // ==========================================
+        /* ==========================================
+           무한 루프 스크롤 & 관측 & 자동 스크롤 로직
+           ========================================== */
         let autoScrollTimer = null;
 
         function stopAutoScroll() {
@@ -625,7 +572,6 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
             let currentActiveIndex = 0;
             let userActivityTimeout = null;
 
-            // 프로젝트 정보 업데이트 함수
             function updateContent(target) {
                 if (!contentBox) return;
                 contentBox.classList.add("fade-out");
@@ -645,11 +591,10 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
                 }, 150);
             }
 
-            // IntersectionObserver 생성
             function createObserver() {
                 const observerOptions = {
                     root: null,
-                    rootMargin: "-150px 0px -60% 0px",
+                    rootMargin: "-130px 0px -60% 0px",
                     threshold: 0
                 };
 
@@ -670,7 +615,6 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
                 document.querySelectorAll(".image-snap-item").forEach((item) => observer.observe(item));
             }
 
-            // 다음 프로젝트로 이동
             function scrollToNextProject() {
                 const items = document.querySelectorAll(".image-snap-item");
                 const nextIndex = currentActiveIndex + 1;
@@ -678,7 +622,7 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
                 if (nextIndex < items.length) {
                     const nextItem = items[nextIndex];
                     const isMobile = window.innerWidth <= 768;
-                    const scrollMargin = isMobile ? 120 : 150;
+                    const scrollMargin = isMobile ? 80 : 130;
                     
                     const targetPosition = nextItem.getBoundingClientRect().top + window.scrollY - scrollMargin;
 
@@ -689,17 +633,13 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
                 }
             }
 
-            // 자동 스크롤 시작 (모바일에선 동작 방지)
             function startAutoScroll() {
                 stopAutoScroll();
-                
-                // 모바일 환경(768px 이하)일 경우 자동 스크롤을 실행하지 않음
                 if (window.innerWidth <= 768) return;
 
                 autoScrollTimer = setInterval(scrollToNextProject, 4000);
             }
 
-            // 사용자 조작 발생 시: 일시 정지 후 3초 뒤 자동 스크롤 재개 (PC 환경 전용)
             function handleUserInteraction() {
                 stopAutoScroll();
 
@@ -714,7 +654,6 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
                 }, 3000);
             }
 
-            // 무한 스크롤 생성
             function setupInfiniteScroll() {
                 for (let i = 0; i < 2; i++) {
                     initialItems.forEach((item) => {
@@ -740,7 +679,6 @@ Within the tranquility of nature and a Buddhist temple, this stay offers a conte
                 });
             }
 
-            // 사용자 스크롤/터치/휠 이벤트 바인딩
             function setupUserInteractionEvents() {
                 const interactionEvents = ["wheel", "touchmove", "keydown", "mousedown"];
 
