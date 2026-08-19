@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOK ARCHITECTURE</title>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
     
     <style>
-        /* 1. HTML / BODY 스크롤 스냅 설정 */
-        html {
-            scroll-behavior: smooth;
-            scroll-snap-type: y mandatory;
+        /* 1. 기본 스타일 초기화 */
+        * {
+            box-sizing: border-box;
         }
 
-        body { 
+        html, body { 
             margin: 0; 
             padding: 0; 
-            padding-top: 100px; 
             background-color: #ffffff; 
-            font-family: 'Pretendard', sans-serif; 
-            font-size: 12px; 
-            color: #333; 
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; 
+            color: #111111; 
             overflow-x: hidden;
-            overflow-y: hidden;
+            overflow-y: auto;
         }
 
-        /* 인트로 배경 오버레이 */
+        a { text-decoration: none; color: inherit; display: block; }
+
+        /* --- 인트로 애니메이션 요소 --- */
         #introOverlay {
             position: fixed;
             top: 0;
@@ -34,570 +34,487 @@
             background-color: #ffffff;
             z-index: 9998;
             pointer-events: none;
-            transition: opacity 0.8s ease;
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* 인트로 그라데이션 선 */
+        /* 인트로 라인 래퍼 */
+        .intro-line-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        /* 인트로 시 중앙에서 좌우로 늘어나는 그라데이션 선 연출 */
         .intro-line {
-            position: fixed;
-            top: 50vh;
-            left: 20px;
-            right: 20px;
+            width: calc(100% - 80px);
+            margin: 0 auto;
             height: 1px;
-            background: linear-gradient(
-                to right, 
-                rgba(160, 160, 160, 0) 0%, 
-                rgba(160, 160, 160, 0.5) 2%, 
-                rgba(100, 100, 100, 1) 15%, 
-                rgba(100, 100, 100, 1) 85%, 
-                rgba(160, 160, 160, 0.5) 98%, 
-                rgba(160, 160, 160, 0) 100%
-            );
+            /* 진한 선 색상(#666) 및 부드러운 15% 양끝 페이드 그라데이션 적용 */
+            background: linear-gradient(90deg, rgba(102,102,102,0) 0%, rgba(102,102,102,1) 15%, rgba(102,102,102,1) 85%, rgba(102,102,102,0) 100%);
             transform: scaleX(0);
             transform-origin: center;
-            z-index: 10001;
-            animation: expandLine 1.0s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-            transition: top 0.8s cubic-bezier(0.77, 0, 0.175, 1);
-            pointer-events: none;
+            animation: expandLine 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
 
         @keyframes expandLine {
             0% { transform: scaleX(0); opacity: 0; }
-            30% { opacity: 1; }
+            15% { opacity: 1; }
             100% { transform: scaleX(1); opacity: 1; }
         }
 
-        /* 본문 및 헤더 요소 초기 숨김 */
-        .header, .main-wrapper {
+        /* 인트로 진행 중 본문 요소 투명 처리 */
+        .header, .center-divider, .main-wrapper {
             opacity: 0;
-            transition: opacity 0.8s ease;
+            transition: opacity 0.8s ease 0.3s;
         }
 
+        /* 인트로 완료 후 자연스럽게 본문 등장 */
         body.loaded .header, 
+        body.loaded .center-divider,
         body.loaded .main-wrapper {
             opacity: 1;
         }
 
-        body.loaded {
-            overflow-y: auto;
-        }
-
-        a { text-decoration: none; color: inherit; display: block; }
-
-        /* 헤더 레이아웃 */
+        /* 2. 헤더 레이아웃 */
         .header { 
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 50px;
-            align-items: center; 
-            padding: 15px 60px 20px 60px; 
-            position: fixed; 
-            top: 0; 
-            left: 0;
+            padding: 40px 40px 30px 40px; 
+            position: relative; 
             width: 100%;
             background-color: #ffffff; 
             z-index: 1000; 
-            font-weight: 500;
-            box-sizing: border-box;
         }
 
-        .header-left { 
-            display: flex; 
-            align-items: center; 
-        }
-
-        .logo-area { display: flex; align-items: center; }
-        .logo-text { font-size: 60px; font-weight: 600; letter-spacing: 1px; line-height: 1; }
-
-        /* 데스크톱 네비게이션 */
-        .header-right { 
-            display: flex; 
-            align-items: center; 
+        .header-top {
+            display: flex;
             justify-content: space-between;
+            align-items: flex-start;
             width: 100%;
         }
 
-        .nav-item {
-            font-size: 11px;
-            font-weight: 500;
-            letter-spacing: 0.8px;
-            cursor: pointer;
-            transition: opacity 0.2s ease;
+        .logo-text { 
+            font-size: 110px; 
+            font-weight: 700; 
+            letter-spacing: -2px; 
+            line-height: 0.85; 
+            color: #0f1c15;
+            margin: 0;
             text-transform: uppercase;
         }
 
-        .nav-item:hover {
-            opacity: 0.5;
+        .nav-main {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            padding-top: 10px;
         }
 
-        /* 모바일 햄버거 버튼 */
-        .hamburger-btn {
-            display: none;
-            flex-direction: column;
+        .nav-item {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            color: #111;
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-item:hover { opacity: 0.5; }
+        .nav-item::after { content: " ↗"; font-size: 10px; margin-left: 2px; }
+
+        .header-bottom {
+            display: flex;
             justify-content: space-between;
-            width: 18px;
-            height: 13px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            z-index: 1001;
-            justify-self: end;
+            align-items: flex-end;
+            margin-top: 25px;
         }
 
-        .hamburger-btn span {
-            display: block;
-            width: 100%;
-            height: 1.5px;
-            background-color: #333;
-            transition: all 0.3s ease;
+        .header-desc {
+            max-width: 380px;
+            font-size: 12px;
+            line-height: 1.45;
+            font-weight: 600;
+            color: #222;
+            word-break: keep-all;
         }
 
-        .hamburger-btn.active span:nth-child(1) {
-            transform: translateY(5.5px) rotate(45deg);
-        }
-        .hamburger-btn.active span:nth-child(2) {
-            opacity: 0;
-        }
-        .hamburger-btn.active span:nth-child(3) {
-            transform: translateY(-5.5px) rotate(-45deg);
+        .appointment-btn {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: #111;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid #111;
+            padding-bottom: 2px;
         }
 
-        /* 전체 레이아웃 */
+        .appointment-btn::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: #111;
+            border-radius: 50%;
+        }
+
+        /* 3. 본문 경계선 (어두워진 톤 + 여유로운 양끝 페이드아웃 그라데이션) */
+        .center-divider {
+            width: calc(100% - 80px);
+            margin: 0 auto;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(102,102,102,0) 0%, rgba(102,102,102,1) 15%, rgba(102,102,102,1) 85%, rgba(102,102,102,0) 100%);
+        }
+
+        /* 4. 메인 콘텐츠 레이아웃 */
         .main-wrapper { 
             display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 50px;
+            grid-template-columns: 80px 1.2fr 0.8fr;
+            padding: 40px 40px 60px 40px; 
+            gap: 20px;
             align-items: start;
-            padding: 0 60px 20px 60px; 
-            margin-top: 30px;
-            box-sizing: border-box;
         }
 
-        /* 왼쪽 이미지 스크롤 영역 */
+        .index-column {
+            font-size: 12px;
+            font-weight: 600;
+            color: #555;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: sticky;
+            top: 40px;
+        }
+
+        .index-number { color: #888; }
+
         .image-scroll-section {
             display: flex;
             flex-direction: column;
         }
 
         .image-snap-item {
-            margin-bottom: 40px;
+            margin-bottom: 100px;
             position: relative;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            scroll-margin-top: 130px;
         }
 
-        /* 이미지 비율 16:9 */
         .image-container { 
             width: 100%;
-            aspect-ratio: 16 / 9;
-            min-height: unset;
+            aspect-ratio: 16 / 10;
             overflow: hidden;
             position: relative;
+            background-color: #f5f5f5;
         }
+
         .image-container img { 
             width: 100%; 
             height: 100%;
             object-fit: cover;
             display: block; 
+            filter: grayscale(100%) brightness(0.9);
+            transition: filter 0.6s ease, transform 0.6s ease;
         }
 
-        /* 오른쪽 텍스트 고정(Sticky) 영역 */
+        .image-snap-item.is-active .image-container img {
+            filter: grayscale(0%) brightness(1);
+        }
+
         .content-fixed-section { 
             position: sticky; 
-            top: 130px;
-            padding-left: 0;
+            top: 40px;
+            padding-left: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 480px;
         }
 
         .content { 
             position: relative; 
-            min-height: 400px; 
-            padding-bottom: 60px;
             transition: opacity 0.3s ease;
         }
-        .content.fade-out {
-            opacity: 0;
+
+        .content.fade-out { opacity: 0; }
+
+        #textProject {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -1px;
+            color: #0f1c15;
+            margin: 0 0 25px 0;
         }
 
-        /* View Project 버튼 */
+        #textDesc {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #333;
+            font-weight: 500;
+            max-width: 420px;
+            margin: 0 0 30px 0;
+            word-break: keep-all;
+        }
+
         .project-link-btn {
             display: inline-block;
-            margin-top: 35px;
-            padding: 10px 28px;
-            border: 1px solid #333;
-            border-radius: 20px;
+            padding: 10px 24px;
+            border: 1px solid #111;
+            border-radius: 30px;
             font-size: 11px;
+            font-weight: 600;
             letter-spacing: 0.5px;
-            background-color: #333;
-            color: #ffffff;
+            background-color: transparent;
+            color: #111;
             text-align: center;
             transition: all 0.3s ease;
         }
 
         .project-link-btn:hover {
-            background-color: #555555;
-            border-color: #555555;
+            background-color: #111;
             color: #ffffff;
         }
 
-        .scroll-arrow { 
-            position: absolute; 
-            bottom: -10%; 
-            left: 50%; 
-            transform: translateX(-50%) rotate(45deg);
-            width: 20px; 
-            height: 20px; 
-            border-bottom: 1.5px solid #333; 
-            border-right: 1.5px solid #333;
-            animation: float 1.5s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateX(-50%) translateY(0) rotate(45deg); }
-            50% { transform: translateX(-50%) translateY(-10px) rotate(45deg); }
-        }
-
-        .content h3 { font-size: 11px; margin-top: 30px; margin-bottom: 10px; color: #888; text-transform: uppercase; }
-        .content p { line-height: 1.6; margin: 0; font-size: 12px; }
-        
-        #textProject {
-            font-size: 36px;
+        .nav-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding-top: 20px;
+            font-size: 12px;
             font-weight: 600;
-            line-height: 1.1;
-            letter-spacing: -0.5px;
-            text-transform: none;
-            color: #333;
-            margin-top: 0;
-            margin-bottom: 30px;
+            color: #111;
         }
 
-        .mobile-info-group {
-            display: none;
+        .action-link {
+            cursor: pointer;
+            transition: opacity 0.2s ease;
         }
 
-        /* 모바일 반응형 (768px 이하) */
+        .action-link:hover { opacity: 0.5; }
+
+        .hamburger-btn, .mobile-info-group { display: none; }
+
+        /* 5. 모바일 반응형 */
         @media (max-width: 768px) {
-            html {
-                scroll-snap-type: y proximity;
-            }
-
-            body {
-                padding-top: 70px;
-                font-size: 14px;
-            }
-
-            .intro-line {
-                left: 15px;
-                right: 15px;
-                height: 0.8px;
-            }
-
-            .header { 
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-end;
-                padding: 15px 20px 12px 20px; 
-            }
-
-            .logo-text { 
-                font-size: 40px; 
-            }
-
+            .header { padding: 20px; }
+            .logo-text { font-size: 54px; }
+            .nav-main { display: none; }
+            
             .hamburger-btn {
                 display: flex;
-                margin-bottom: 4px;
+                flex-direction: column;
+                justify-content: space-between;
+                width: 22px;
+                height: 14px;
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 0;
             }
 
-            .header-right {
-                position: fixed;
-                top: 60px;
-                left: 0;
+            .hamburger-btn span {
                 width: 100%;
-                background-color: #ffffff;
+                height: 2px;
+                background-color: #111;
+            }
+
+            .header-bottom {
                 flex-direction: column;
                 align-items: flex-start;
-                padding: 20px 25px 30px 25px;
-                gap: 18px;
-                box-sizing: border-box;
-                border-bottom: 1px solid #eee;
-                transform: translateY(-150%);
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.35s ease-in-out;
-                z-index: 999;
+                gap: 15px;
+                margin-top: 15px;
             }
 
-            .header-right.active {
-                transform: translateY(0);
-                opacity: 1;
-                visibility: visible;
-            }
-
-            .nav-item {
-                font-size: 13px;
-                font-weight: 500;
-                width: 100%;
-            }
+            .center-divider, .intro-line { width: calc(100% - 40px); }
 
             .main-wrapper { 
                 grid-template-columns: 1fr; 
-                padding: 15px;
-                margin-top: 10px;
+                padding: 20px;
                 gap: 0;
             }
 
-            .image-snap-item {
-                margin-bottom: 40px;
-                scroll-snap-align: start;
-                scroll-margin-top: 80px;
-            }
+            .index-column, .content-fixed-section { display: none; }
+            .image-snap-item { margin-bottom: 50px; }
 
-            .image-container {
-                aspect-ratio: 16 / 9;
-                min-height: unset;
-                border-radius: 2px;
-            }
-
-            /* 모바일 하단 타이틀 & 설명 영역 */
             .mobile-info-group {
                 display: block;
-                margin-top: 14px;
-                padding-top: 2px;
+                margin-top: 12px;
             }
 
             .mobile-project-title {
-                color: #333;
-                font-size: 16px;
-                font-weight: 600;
-                letter-spacing: -0.2px;
+                font-size: 22px;
+                font-weight: 700;
+                color: #111;
                 margin-bottom: 6px;
             }
 
             .mobile-project-desc {
-                color: #666666;
-                font-size: 11.5px;
+                font-size: 12px;
                 line-height: 1.5;
-                font-weight: 400;
-                /* 2줄 초과 시 말줄임 처리 */
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .content-fixed-section { 
-                display: none; 
+                color: #555;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- 인트로 오버레이 & 고정 경계선 -->
+    <!-- 인트로 커버 오버레이 -->
     <div id="introOverlay"></div>
-    <div class="intro-line" id="introLine"></div>
 
-    <header class="header" id="headerNav">
-        <a href="index.html" class="header-left">
-            <div class="logo-area">
-                <span class="logo-text">MOK</span>
+    <header class="header" id="mainHeader">
+        <div class="header-top">
+            <a href="index.html" class="logo-area">
+                <h1 class="logo-text">MOK</h1>
+            </a>
+            
+            <nav class="nav-main">
+                <a href="project.html" class="nav-item">Projects</a>
+                <a href="about.html" class="nav-item">Shops</a>
+                <a href="blogs.html" class="nav-item">Blogs</a>
+                <a href="awards.html" class="nav-item">Awards</a>
+            </nav>
+
+            <button class="hamburger-btn" aria-label="메뉴 열기">
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+
+        <div class="header-bottom">
+            <div class="header-desc">
+                We are lifestyle. We build lifestyle that you deserve for the life your belongs to. World class interior design service.
             </div>
-        </a>
-        
-        <!-- 우측 메뉴 버튼 -->
-        <nav class="header-right" id="navMenu">
-            <a href="about.html" class="nav-item">ABOUT</a>
-            <a href="project.html" class="nav-item">PROJECT</a>
-            <a href="instagram.html" class="nav-item">INSTAGRAM</a>
-            <a href="behance.html" class="nav-item">BEHANCE</a>
-            <a href="youtube.html" class="nav-item">YOUTUBE</a>
-            <a href="contact.html" class="nav-item">CONTACT</a>
-        </nav>
-
-        <!-- 햄버거 토글 버튼 (모바일 전용) -->
-        <button class="hamburger-btn" id="hamburgerBtn" aria-label="메뉴 열기">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
+            <a href="contact.html" class="appointment-btn">APPOINTMENT</a>
+        </div>
     </header>
 
+    <!-- 인트로 펼쳐짐 연출 전용 라인 래퍼 -->
+    <div class="intro-line-wrapper" id="introLineWrapper">
+        <div class="intro-line" id="introLine"></div>
+    </div>
+
+    <!-- 고정 경계선 -->
+    <div class="center-divider"></div>
+
     <main class="main-wrapper">
-        <!-- 왼쪽: 이미지 스크롤 영역 -->
+        <div class="index-column">
+            <span class="index-number">( 1/6 )</span>
+            <span class="index-year">Y25</span>
+        </div>
+
         <div class="image-scroll-section" id="imageScrollSection">
             
-            <!-- 프로젝트 1 -->
             <a href="project-comfortemple.html" class="image-snap-item" 
+                 data-index="( 1/6 )"
+                 data-year="Y25"
                  data-project="Comfortemple" 
-                 data-type="[2023.10] Architecture + Interior" 
                  data-link="project-comfortemple.html"
-                 data-pc-desc="자연과 고요한 사찰의 공간 속에서 불교의 비움과 수행의 가치를 현대적으로 경험하며, 일상의 자극과 번잡함에서 벗어나 마음의 평온을 되찾는 스테이 공간.
-A contemporary retreat inspired by Buddhist principles of letting go, where nature and stillness create a space for reflection and inner peace."
-                 data-mobile-desc="A contemporary retreat inspired by Buddhist principles of letting go, where nature and stillness create a space for reflection and inner peace.">
+                 data-pc-desc="A grand contemporary estate that blends modern luxury with minimalist elegance. Designed to capture light and space, it redefines upscale living with bold, refined architecture.">
                 <div class="image-container">
-                    <picture>
-                        <source media="(max-width: 768px)" srcset="1.png">
-                        <img src="1.png" alt="Comfortemple Project">
-                    </picture>
+                    <img src="1.png" alt="Comfortemple Project">
                 </div>
                 <div class="mobile-info-group">
                     <div class="mobile-project-title">Comfortemple</div>
-                    <div class="mobile-project-desc">A contemporary retreat inspired by Buddhist principles of letting go, where nature and stillness create a space for reflection and inner peace.</div>
+                    <div class="mobile-project-desc">A grand contemporary estate that blends modern luxury with minimalist elegance. Designed to capture light and space...</div>
                 </div>
             </a>
 
-            <!-- 프로젝트 2 -->
             <a href="project-second.html" class="image-snap-item" 
+                 data-index="( 2/6 )"
+                 data-year="Y26"
                  data-project="Melbourne Home" 
-                 data-type="[2026.05] Interior" 
                  data-link="project-second.html"
-                 data-pc-desc="자연과 고요한 사찰의 공간 속에서 불교의 비움과 수행의 가치를 현대적으로 경험하며, 일상의 자극과 번잡함에서 벗어나 마음의 평온을 되찾는 스테이 공간.
-Here, the boundary between the indoor and outdoor spaces has not been deliberately eliminated. Instead, it becomes even more distinct and refined through minimal architecture and soft lighting."
-                 data-mobile-desc="Here, the boundary between the indoor and outdoor spaces has not been deliberately eliminated. Instead, it becomes even more distinct...">
+                 data-pc-desc="Here, the boundary between the indoor and outdoor spaces has not been deliberately eliminated. Instead, it becomes even more distinct and refined through minimal architecture and soft lighting.">
                 <div class="image-container">
-                    <picture>
-                        <source media="(max-width: 768px)" srcset="2.jpg">
-                        <img src="2.jpg" alt="Melbourne Home">
-                    </picture>
+                    <img src="2.jpg" alt="Melbourne Home">
                 </div>
                 <div class="mobile-info-group">
                     <div class="mobile-project-title">Melbourne Home</div>
-                    <div class="mobile-project-desc">Here, the boundary between the indoor and outdoor spaces has not been deliberately eliminated. Instead, it becomes even more distinct...</div>
+                    <div class="mobile-project-desc">Here, the boundary between the indoor and outdoor spaces has not been deliberately eliminated...</div>
                 </div>
             </a>
 
-            <!-- 프로젝트 3 -->
             <a href="project-third.html" class="image-snap-item" 
-                 data-project="Third Project Title" 
-                 data-type="[2026.07] Interior" 
+                 data-index="( 3/6 )"
+                 data-year="Y26"
+                 data-project="Maison Éclat" 
                  data-link="project-third.html"
-                 data-pc-desc="자연과 고요한 사찰의 공간 속에서 불교의 비움과 수행의 가치를 현대적으로 경험하며, 일상의 자극과 번잡함에서 벗어나 마음의 평온을 되찾는 스테이 공간.
-A comprehensive approach combining structural elements with identity design to craft timeless modern architectural spaces for urban residential living."
-                 data-mobile-desc="A comprehensive approach combining structural elements with identity design to craft timeless modern spaces.">
+                 data-pc-desc="A comprehensive approach combining structural elements with identity design to craft timeless modern architectural spaces for urban residential living.">
                 <div class="image-container">
-                    <picture>
-                        <source media="(max-width: 768px)" srcset="3.jpg">
-                        <img src="3.jpg" alt="Third Project Title">
-                    </picture>
+                    <img src="3.jpg" alt="Maison Éclat">
                 </div>
                 <div class="mobile-info-group">
-                    <div class="mobile-project-title">Third Project Title</div>
+                    <div class="mobile-project-title">Maison Éclat</div>
                     <div class="mobile-project-desc">A comprehensive approach combining structural elements with identity design to craft timeless modern spaces.</div>
                 </div>
             </a>
 
         </div>
 
-        <!-- 오른쪽: 고정 텍스트 영역 (PC용) -->
-        <div class="content-fixed-section">
+        <div class="content-fixed-section" id="fixedRightSection">
             <div class="content" id="contentBox">
-                <p id="textProject"></p>
-                <h3>PROJECT TYPE</h3><p id="textType"></p>
-                <h3>DESCRIPTION</h3><p id="textDesc"></p>
-                
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <h2 id="textProject">Comfortemple</h2>
+                    <a href="project.html" style="font-size: 11px; font-weight: 600; color: #111;">See All</a>
+                </div>
+                <p id="textDesc"></p>
                 <div>
                     <a href="#" id="projectLinkBtn" class="project-link-btn">View Project</a>
                 </div>
+            </div>
 
-                <div class="scroll-arrow"></div>
+            <div class="nav-actions">
+                <span class="action-link" id="btnPrev">Prev</span>
+                <span class="action-link" id="btnNext">Next</span>
             </div>
         </div>
     </main>
 
     <script>
-        function updateLinePosition() {
-            const headerNav = document.getElementById("headerNav");
-            const introLine = document.getElementById("introLine");
-            if (headerNav && introLine) {
-                const headerBottom = headerNav.getBoundingClientRect().bottom;
-                introLine.style.top = `${headerBottom}px`;
+        // 인트로 라인 높이를 헤더 크기에 부드럽게 정밀 맞춤
+        function alignIntroLine() {
+            const header = document.getElementById("mainHeader");
+            const wrapper = document.getElementById("introLineWrapper");
+            if (header && wrapper) {
+                wrapper.style.top = header.offsetHeight + "px";
             }
         }
+
+        window.addEventListener("resize", alignIntroLine);
 
         window.addEventListener("load", () => {
-            runIntroSequence();
-        });
+            alignIntroLine();
 
-        const fallbackTimer = setTimeout(() => {
-            if (!document.body.classList.contains("loaded")) {
-                runIntroSequence();
-            }
-        }, 2500);
-
-        function runIntroSequence() {
-            clearTimeout(fallbackTimer);
             const introOverlay = document.getElementById("introOverlay");
+            const introLineWrapper = document.getElementById("introLineWrapper");
 
-            if (document.body.classList.contains("loaded")) return;
-
+            // 1. 좌우 확장 애니메이션 연출 후 본문 등장
             setTimeout(() => {
-                updateLinePosition();
+                document.body.classList.add("loaded");
+                if (introOverlay) introOverlay.style.opacity = "0";
 
+                // 2. 오버레이 및 인트로 전용 레이어 정리
                 setTimeout(() => {
-                    document.body.classList.add("loaded");
-                    introOverlay.style.opacity = "0";
-
-                    setTimeout(() => {
-                        introOverlay.style.display = "none";
-                    }, 800);
-                }, 300);
-            }, 1000);
-        }
-
-        /* 모바일 햄버거 메뉴 토글 로직 */
-        const hamburgerBtn = document.getElementById("hamburgerBtn");
-        const navMenu = document.getElementById("navMenu");
-
-        hamburgerBtn.addEventListener("click", () => {
-            hamburgerBtn.classList.toggle("active");
-            navMenu.classList.toggle("active");
+                    if (introOverlay) introOverlay.style.display = "none";
+                    if (introLineWrapper) introLineWrapper.style.display = "none";
+                }, 800);
+            }, 700);
         });
-
-        /* 모바일 메뉴 항목 클릭 시 메뉴 닫기 */
-        document.querySelectorAll(".nav-item").forEach(item => {
-            item.addEventListener("click", () => {
-                hamburgerBtn.classList.remove("active");
-                navMenu.classList.remove("active");
-            });
-        });
-
-        window.addEventListener("resize", () => {
-            updateLinePosition();
-            
-            if (window.innerWidth <= 768) {
-                stopAutoScroll();
-            } else {
-                hamburgerBtn.classList.remove("active");
-                navMenu.classList.remove("active");
-            }
-        });
-
-        /* ==========================================
-           무한 루프 스크롤 & 관측 & 자동 스크롤 로직
-           ========================================== */
-        let autoScrollTimer = null;
-
-        function stopAutoScroll() {
-            if (autoScrollTimer) {
-                clearInterval(autoScrollTimer);
-                autoScrollTimer = null;
-            }
-        }
 
         document.addEventListener("DOMContentLoaded", () => {
-            const scrollContainer = document.getElementById("imageScrollSection");
+            alignIntroLine();
+
             const contentBox = document.getElementById("contentBox");
             const textProject = document.getElementById("textProject");
-            const textType = document.getElementById("textType");
             const textDesc = document.getElementById("textDesc");
             const projectLinkBtn = document.getElementById("projectLinkBtn");
+            const indexNumberText = document.querySelector(".index-number");
+            const indexYearText = document.querySelector(".index-year");
 
-            const initialItems = Array.from(scrollContainer.querySelectorAll(".image-snap-item"));
-            let observer = null;
+            const items = Array.from(document.querySelectorAll(".image-snap-item"));
             let currentActiveIndex = 0;
-            let userActivityTimeout = null;
 
             function updateContent(target) {
                 if (!contentBox) return;
@@ -605,11 +522,14 @@ A comprehensive approach combining structural elements with identity design to c
 
                 setTimeout(() => {
                     textProject.textContent = target.dataset.project || "";
-                    textType.textContent = target.dataset.type || "";
+                    textDesc.textContent = target.dataset.pcDesc || "";
 
-                    /* PC 전용 설명글(data-pc-desc) 적용 */
-                    const rawDesc = target.dataset.pcDesc || "";
-                    textDesc.innerHTML = rawDesc.trim().replace(/\n+/g, '<br><br>');
+                    if (indexNumberText && target.dataset.index) {
+                        indexNumberText.textContent = target.dataset.index;
+                    }
+                    if (indexYearText && target.dataset.year) {
+                        indexYearText.textContent = target.dataset.year;
+                    }
 
                     if (projectLinkBtn) {
                         projectLinkBtn.href = target.dataset.link || "#";
@@ -619,105 +539,39 @@ A comprehensive approach combining structural elements with identity design to c
                 }, 150);
             }
 
-            function createObserver() {
-                const observerOptions = {
-                    root: null,
-                    rootMargin: "-130px 0px -60% 0px",
-                    threshold: 0
-                };
+            const observerOptions = {
+                root: null,
+                rootMargin: "-30% 0px -40% 0px",
+                threshold: 0.1
+            };
 
-                observer = new IntersectionObserver((entries) => {
-                    entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                            updateContent(entry.target);
-                            
-                            const items = Array.from(document.querySelectorAll(".image-snap-item"));
-                            const index = items.indexOf(entry.target);
-                            if (index !== -1) {
-                                currentActiveIndex = index;
-                            }
-                        }
-                    });
-                }, observerOptions);
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        items.forEach(el => el.classList.remove("is-active"));
+                        entry.target.classList.add("is-active");
 
-                document.querySelectorAll(".image-snap-item").forEach((item) => observer.observe(item));
-            }
-
-            function scrollToNextProject() {
-                const items = document.querySelectorAll(".image-snap-item");
-                const nextIndex = currentActiveIndex + 1;
-
-                if (nextIndex < items.length) {
-                    const nextItem = items[nextIndex];
-                    const isMobile = window.innerWidth <= 768;
-                    const scrollMargin = isMobile ? 80 : 130;
-                    
-                    const targetPosition = nextItem.getBoundingClientRect().top + window.scrollY - scrollMargin;
-
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: "smooth"
-                    });
-                }
-            }
-
-            function startAutoScroll() {
-                stopAutoScroll();
-                if (window.innerWidth <= 768) return;
-
-                autoScrollTimer = setInterval(scrollToNextProject, 4000);
-            }
-
-            function handleUserInteraction() {
-                stopAutoScroll();
-
-                if (window.innerWidth <= 768) return;
-
-                if (userActivityTimeout) {
-                    clearTimeout(userActivityTimeout);
-                }
-
-                userActivityTimeout = setTimeout(() => {
-                    startAutoScroll();
-                }, 3000);
-            }
-
-            function setupInfiniteScroll() {
-                for (let i = 0; i < 2; i++) {
-                    initialItems.forEach((item) => {
-                        const clone = item.cloneNode(true);
-                        scrollContainer.appendChild(clone);
-                    });
-                }
-
-                createObserver();
-
-                window.addEventListener("scroll", () => {
-                    const scrollHeight = document.documentElement.scrollHeight;
-                    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-                    const clientHeight = document.documentElement.clientHeight;
-
-                    if (scrollTop + clientHeight >= scrollHeight - 800) {
-                        initialItems.forEach((item) => {
-                            const clone = item.cloneNode(true);
-                            scrollContainer.appendChild(clone);
-                            if (observer) observer.observe(clone);
-                        });
+                        updateContent(entry.target);
+                        
+                        const idx = items.indexOf(entry.target);
+                        if (idx !== -1) currentActiveIndex = idx;
                     }
                 });
-            }
+            }, observerOptions);
 
-            function setupUserInteractionEvents() {
-                const interactionEvents = ["wheel", "touchmove", "keydown", "mousedown"];
+            items.forEach((item) => observer.observe(item));
 
-                interactionEvents.forEach(evt => {
-                    window.addEventListener(evt, handleUserInteraction, { passive: true });
-                });
-            }
+            document.getElementById("btnNext")?.addEventListener("click", () => {
+                if (currentActiveIndex < items.length - 1) {
+                    items[currentActiveIndex + 1].scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+            });
 
-            setupInfiniteScroll();
-            setupUserInteractionEvents();
-            startAutoScroll();
+            document.getElementById("btnPrev")?.addEventListener("click", () => {
+                if (currentActiveIndex > 0) {
+                    items[currentActiveIndex - 1].scrollIntoView({ behavior: "smooth", block: "center" });
+                }
+            });
         });
     </script>
 </body>
